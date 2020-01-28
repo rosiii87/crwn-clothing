@@ -66,3 +66,7 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+### MARYZEET -> for creating a product detail page
+
+We would need to convert arrays of sections into a list of object, same as we did for collection in 135. video
