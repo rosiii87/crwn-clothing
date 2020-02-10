@@ -1,18 +1,21 @@
 import React from 'react';
-import './App.css';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
+import './App.css';
+
 import HomePage from './pages/homepage/homepage.component';
-import ShopPage from './pages/shop/shop.component.jsx';
-import Header from './components/header/header.component';
-import SignInSignUpPage from './pages/sign-in-sign-up/sign-in-sign-up.components';
+import ShopPage from './pages/shop/shop.component';
+import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 import CheckoutPage from './pages/checkout/checkout.component';
 
+import Header from './components/header/header.component';
+
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+
 import { setCurrentUser } from './redux/user/user.actions';
-import { selectCurrentUser } from './redux/user/user.selector';
+import { selectCurrentUser } from './redux/user/user.selectors';
 
 class App extends React.Component {
   unsubscribeFromAuth = null;
@@ -22,21 +25,17 @@ class App extends React.Component {
 
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
-        //checking if there is a user and getting the reference obj. from document obj with userAuth passed in it.
         const userRef = await createUserProfileDocument(userAuth);
 
         userRef.onSnapshot(snapShot => {
-          // we are getting data from dtb snapshot. (on 2 diff levels (id & rest))
           setCurrentUser({
             id: snapShot.id,
             ...snapShot.data()
           });
         });
-      } else {
-        setCurrentUser(userAuth); // if its null -> logout user
       }
 
-      // this.setState({ currentUser: user });
+      setCurrentUser(userAuth);
     });
   }
 
@@ -59,7 +58,7 @@ class App extends React.Component {
               this.props.currentUser ? (
                 <Redirect to="/" />
               ) : (
-                <SignInSignUpPage />
+                <SignInAndSignUpPage />
               )
             }
           />

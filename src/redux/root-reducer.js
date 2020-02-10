@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-// technicaly say, use LocalStorage
 
 import userReducer from './user/user.reducer';
 import cartReducer from './cart/cart.reducer';
@@ -11,7 +10,7 @@ import shopReducer from './shop/shop.reducer';
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['cart'] //because user is dealt by firebase
+  whitelist: ['cart']
 };
 
 const rootReducer = combineReducers({

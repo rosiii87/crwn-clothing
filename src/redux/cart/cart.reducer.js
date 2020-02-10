@@ -27,7 +27,6 @@ const cartReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         cartItems: state.cartItems.filter(
-          // filter returning back all the items with not matching id of that payload (one we want to remove)
           cartItem => cartItem.id !== action.payload.id
         )
       };
