@@ -1,7 +1,6 @@
-## Lesson-26-complete
+## Lesson-28
 
-In this repository, all our components have been converted to styled-components!
-
+In this lesson we are using redux-thunk for asynchronous event handling! We have modified our collections-page collections-overview components to use the container pattern to separate their loading logic out of our shop component, and into their own isolated files.
 
 # How to fork and clone
 
