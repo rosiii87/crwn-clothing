@@ -22,7 +22,7 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
   });
 }
-
+// server
 app.listen(port, error => {
   if (error) throw error;
   console.log('Server running on port ' + port);
