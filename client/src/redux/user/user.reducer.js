@@ -8,7 +8,8 @@ const INITIAL_STATE = {
 
 const userReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case UserActionTypes.SIGN_IN_SUCCESS: // either can be true
+    case UserActionTypes.SIGN_IN_SUCCESS:
+    case UserActionTypes.EDIT_USER: // either can be true
       return {
         ...state,
         currentUser: action.payload,

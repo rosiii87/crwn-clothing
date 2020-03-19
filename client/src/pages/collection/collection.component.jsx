@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Helmet } from 'react-helmet';
 
 import CollectionItem from '../../components/collection-item/collection-item.component';
 
@@ -12,9 +13,13 @@ import {
 } from './collection.styles';
 
 const CollectionPage = ({ collection }) => {
-  const { title, items } = collection;
+  const { title, items } = collection; // as we cant join strings and var here -> need to add description to meta later (from feed)
   return (
     <CollectionPageContainer>
+      <Helmet>
+        <title>{title} - collection</title>
+        <meta name="description" content={title} />
+      </Helmet>
       <CollectionTitle>{title}</CollectionTitle>
       <CollectionItemsContainer>
         {items.map(item => (

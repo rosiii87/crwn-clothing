@@ -41,6 +41,65 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   return userRef;
 };
 
+// get a data from cart collection based on UserId
+export const getUserCartRef = async userId => {
+  const cartsRef = firestore.collection('carts').where('userId', '==', userId);
+  const snapShot = await cartsRef.get();
+
+  if (snapShot.empty) {
+    const cartDocRef = firestore.collection('carts').doc();
+    await cartDocRef.set({ userId, cartItems: [] });
+    return cartDocRef;
+  } else {
+    return snapShot.docs[0].ref;
+  }
+};
+
+// create an order for registered
+export const createNewOrder = async (currentUser, cartItems) => {
+  const orderDocRef = firestore.collection('orders').doc();
+  const createdAt = new Date();
+  const total = cartItems.reduce(
+    (accumulatedQuantity, cartItem) =>
+      accumulatedQuantity + cartItem.quantity * cartItem.price,
+    0
+  );
+  return await orderDocRef.set({
+    userId: currentUser.id,
+    createdAt,
+    Name: currentUser.displayName,
+    Email: currentUser.email,
+    Adress: 'Test adress', //var
+    Payment: 'Platba kartou', //var
+    Delivery: 'GLS', // var
+    Status: 'Objednávka přijata', //conditioned var
+    cartItems,
+    total
+  });
+};
+
+// // create an order for unregistered
+// export const createNewOrderUnreg = async (email, cartItems) => {
+//   const orderDocRef = firestore.collection('orders').doc();
+//   const createdAt = new Date();
+//   const total = cartItems.reduce(
+//     (accumulatedQuantity, cartItem) =>
+//       accumulatedQuantity + cartItem.quantity * cartItem.price,
+//     0
+//   );
+//   return await orderDocRef.set({
+//     createdAt,
+//     // Name: displayName ? displayName : 'dummy',
+//     // Email: email ? email : 'dummy',
+//     Adress: 'Test adress', //var
+//     Payment: 'Platba kartou', //var
+//     Delivery: 'GLS', // var
+//     Status: 'Objednávka přijata', //conditioned var
+//     cartItems,
+//     total
+//   });
+// };
+
 export const addCollectionAndDocuments = async (
   collectionKey,
   objectsToAdd

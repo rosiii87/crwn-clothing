@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const compression = require('compression');
 const enforce = require('express-sslify');
+const prerender = require('prerender-node');
 
 if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 
@@ -11,6 +12,12 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
 const port = process.env.PORT || 5000;
+
+// app.use(
+//   prerender
+//     .set('prerenderServiceUrl', 'https://service.prerender.io/')
+//     .set('prerenderToken', process.env.PRERENDER_TOKEN)
+// );
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -25,6 +32,7 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
   });
 }
+
 // server
 app.listen(port, error => {
   if (error) throw error;

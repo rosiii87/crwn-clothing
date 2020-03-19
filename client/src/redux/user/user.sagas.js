@@ -40,6 +40,23 @@ export function* getSnapshotFromUserAuth(userAuth, additionalData) {
   }
 }
 
+// get snap from Firebase dtb
+export function* getSnapshotFromUserAuthAddData(userAuth, additionalData) {
+  try {
+    const userRef = yield call(
+      createUserProfileDocument,
+      userAuth,
+      additionalData
+    );
+    // const userSnapshot = yield userRef.get();
+    yield userRef.update({
+      ...additionalData
+    });
+  } catch (error) {
+    yield console.log(error);
+  }
+}
+
 // gen. F -> google sign in
 export function* signInWithGoogle() {
   try {
@@ -95,7 +112,19 @@ export function* signInafterSignUp({ payload: { user, additionalData } }) {
   yield getSnapshotFromUserAuth(user, additionalData);
 }
 
+// edit user final
+export function* editUserAfter({ payload: { additionalData } }) {
+  const userAuth = yield getCurrentUser();
+  yield getSnapshotFromUserAuthAddData(userAuth, additionalData);
+}
+
 // FINAL G. FUNCTIONS (previous ones passed in as a saga argument -> async shit)
+
+// edit user
+export function* editUserSuccess() {
+  yield takeLatest(UserActionTypes.EDIT_USER, editUserAfter);
+}
+
 // google sign in
 export function* onGoogleSignInStart() {
   yield takeLatest(UserActionTypes.GOOGLE_SIGN_IN_START, signInWithGoogle);
@@ -131,6 +160,7 @@ export function* userSagas() {
     call(isUserAuthenticated),
     call(onSignOutStart),
     call(onSignUpStart),
-    call(onSignUpSuccess)
+    call(onSignUpSuccess),
+    call(editUserSuccess)
   ]);
 }

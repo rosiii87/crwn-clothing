@@ -1,4 +1,5 @@
 import React, { Profiler } from 'react';
+import { Helmet } from 'react-helmet';
 
 import Directory from '../../components/directory/directory.component';
 
@@ -17,6 +18,12 @@ const HomePage = () => (
         });
       }}
     >
+      <Helmet>
+        <meta
+          name="description"
+          content="Homepage of CRWN clothing - where to buy style"
+        />
+      </Helmet>
       <Directory />
     </Profiler>
   </HomePageContainer>

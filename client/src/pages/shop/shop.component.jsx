@@ -1,6 +1,7 @@
 import React, { useEffect, lazy, Suspense } from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Helmet } from 'react-helmet';
 
 import { fetchCollectionsStart } from '../../redux/shop/shop.actions';
 import Spinner from '../../components/spinner/spinner.component';
@@ -19,6 +20,13 @@ const ShopPage = ({ fetchCollectionsStart, match }) => {
 
   return (
     <div className="shop-page">
+      <Helmet>
+        <title>Shop page</title>
+        <meta
+          name="description"
+          content="Shop page where to see all collections"
+        />
+      </Helmet>
       <Suspense fallback={<Spinner />}>
         <Route
           exact
