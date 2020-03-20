@@ -52,6 +52,13 @@ export function* getSnapshotFromUserAuthAddData(userAuth, additionalData) {
     yield userRef.update({
       ...additionalData
     });
+    const userSnapshot = yield userRef.get();
+    yield put(
+      signInSucces({
+        id: userSnapshot.id,
+        ...userSnapshot.data()
+      })
+    );
   } catch (error) {
     yield console.log(error);
   }

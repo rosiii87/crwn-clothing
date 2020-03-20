@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { Helmet } from 'react-helmet';
@@ -52,6 +52,7 @@ const CheckoutPage = ({
   googleSignInStart,
   editUser
 }) => {
+  // HANDLERS FOR USER PROFILE LOGIN / REGISTER OR NOTHING
   const [userCredentials, setUserCredentials] = useState({
     displayName: '',
     email: '',
@@ -59,6 +60,7 @@ const CheckoutPage = ({
     confirmPassword: ''
   });
 
+  // USER HANDLERS
   const { displayName, email, password, confirmPassword } = userCredentials;
   const handleSubmit = async event => {
     event.preventDefault();
@@ -70,41 +72,75 @@ const CheckoutPage = ({
     emailSignInStart(email, password);
   };
 
-  const handlePay = async event => {
-    event.preventDefault();
-    createOrderInFirebase();
-    clearCart();
-    clearCartInFirebase();
-  };
-
   const handleChange = event => {
+    event.preventDefault();
     const { name, value } = event.target;
 
     setUserCredentials({ ...userCredentials, [name]: value });
   };
 
+  // ADDITIONAL ORDER INFO
+  // doprava and platba has default state => radio buttons
   const [additionalInfo, setAdditionalInfo] = useState({
     city: '',
-    street: ''
-    // telephone: '',
-    // gls: true,
-    // zas: false,
-    // dobirka: true,
-    // prevod: false,
-    // legal: false,
-    // news: false
+    street: '',
+    telephone: '',
+    doprava: 'gls',
+    platba: 'dobirka',
+    message: ''
   });
 
+  // addInfo handlers
   const handleInfoChange = event => {
+    event.preventDefault();
     const { name, value } = event.target;
 
     setAdditionalInfo({ ...additionalInfo, [name]: value });
   };
 
-  const { city } = additionalInfo;
-  const handleOrderInfo = async event => {
+  // checkoboxes hook
+  const [legalCheck, setLegalCheck] = useState({
+    legal: false,
+    news: false
+  });
+
+  // checkboxes handlers
+  const handleChecks = event => {
     event.preventDefault();
-    editUser({ city });
+    const { name } = event.target;
+    const value = event.target.checked;
+
+    setLegalCheck({ ...legalCheck, [name]: value });
+  };
+
+  // CONVERTING TO USERREF
+  // to be able to use timeout -> and variables from state -> we have to add userRef hooks
+  const addRef = useRef(additionalInfo);
+  addRef.current = additionalInfo;
+
+  const checkRef = useRef(legalCheck);
+  checkRef.current = legalCheck;
+
+  // editUser have to come first -> then creating the order in DB
+  const { city, street, telephone, doprava, platba, message } = addRef.current;
+  const { legal, news } = checkRef.current;
+  const handlePay = async event => {
+    setTimeout(() => {
+      createOrderInFirebase();
+      clearCart();
+      clearCartInFirebase();
+    }, 2500);
+    event.preventDefault();
+    editUser({
+      city,
+      street,
+      telephone,
+      doprava,
+      platba,
+      legal,
+      news,
+      message
+    });
   };
 
   return (
@@ -141,7 +177,7 @@ const CheckoutPage = ({
       <SignUpContainer>
         <SignUpTitle>Finish your order</SignUpTitle>
         <span>Contact info</span>
-        <form className="sign-up-form" onSubmit={handlePay}>
+        <form className="sign-up-form">
           <FormInput
             type="text"
             name="displayName"
@@ -155,7 +191,6 @@ const CheckoutPage = ({
             value={user ? user.email : email}
             onChange={handleChange}
             label={user ? 'Even better' : 'email'}
-            required
           />
           {!user ? (
             <FormInput
@@ -206,16 +241,16 @@ const CheckoutPage = ({
           <FormInput
             type="street"
             name="street"
-            // onChange={handleInfoChange}
-            // value={street}
+            onChange={handleInfoChange}
+            value={street}
             label="Ulice a Č.P."
             required
           />
           <FormInput
             type="tel"
             name="telephone"
-            // onChange={handleInfoChange}
-            // value={telephone}
+            onChange={handleInfoChange}
+            value={telephone}
             label="Tel. číslo"
             required
           />
@@ -223,55 +258,57 @@ const CheckoutPage = ({
           <FormInput
             type="radio"
             name="doprava"
-            // onChange={handleInfoChange}
-            // value={gls}
+            onChange={handleInfoChange}
+            value="gls"
             label="GLS"
-            // checked
           />
           <FormInput
             type="radio"
             name="doprava"
-            // onChange={handleChange}
-            // value={zas}
+            onChange={handleInfoChange}
+            value="zásilkovna"
             label="Zásilkovna"
           />
           Platba
           <FormInput
             type="radio"
             name="platba"
-            // onChange={handleChange}
-            // value={dobirka}
+            onChange={handleInfoChange}
+            value="dobírka"
             label="Dobírka"
-            // checked
+            required
           />
           <FormInput
             type="radio"
             name="platba"
-            // onChange={handleChange}
-            // value={prevod}
+            onChange={handleInfoChange}
+            value="Bankovní převod"
             label="Bankovní převod"
           />
+          <FormInput
+            type="text"
+            name="message"
+            value={message}
+            onChange={handleInfoChange}
+            label="Přidat vzkaz k objednávce"
+          />
+        </form>
+        <form className="sign-up-form">
           GDPR shit
           <FormInput
             type="checkbox"
-            required
             name="legal"
-            // onChange={handleChange}
-            // value={legal}
+            onChange={handleChecks}
             label="Souhlasím se vším, shut up and take my money"
           />
           <FormInput
             type="checkbox"
-            name="newsletter"
-            // value={news}
-            // onChange={handleChange}
+            name="news"
+            onChange={handleChecks}
             label="Nechci nezasílát nenewslettery pokud nedám check!"
           />
           <TotalContainer>TOTAL: ${total}</TotalContainer>
-          <CustomButton type="button" onClick={handleOrderInfo}>
-            Odeslat údaje
-          </CustomButton>
-          <CustomButton type="submit">ODESLAT OBJEDNÁVKU</CustomButton>
+          <CustomButton onClick={handlePay}>ODESLAT OBJEDNÁVKU</CustomButton>
         </form>
       </SignUpContainer>
 

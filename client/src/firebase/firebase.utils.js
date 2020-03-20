@@ -59,6 +59,16 @@ export const getUserCartRef = async userId => {
 export const createNewOrder = async (currentUser, cartItems) => {
   const orderDocRef = firestore.collection('orders').doc();
   const createdAt = new Date();
+  const {
+    displayName,
+    email,
+    city,
+    doprava,
+    platba,
+    legal,
+    news,
+    message
+  } = currentUser;
   const total = cartItems.reduce(
     (accumulatedQuantity, cartItem) =>
       accumulatedQuantity + cartItem.quantity * cartItem.price,
@@ -67,38 +77,20 @@ export const createNewOrder = async (currentUser, cartItems) => {
   return await orderDocRef.set({
     userId: currentUser.id,
     createdAt,
-    Name: currentUser.displayName,
-    Email: currentUser.email,
-    Adress: 'Test adress', //var
-    Payment: 'Platba kartou', //var
-    Delivery: 'GLS', // var
-    Status: 'Objednávka přijata', //conditioned var
+    Name: displayName,
+    Email: email,
+    City: city,
+    Payment: platba,
+    Doprava: doprava,
+    Status:
+      platba === 'dobírka' ? 'Objednávka přijata' : 'Čekáme na příjetí platby', //conditioned var
+    legal: legal,
+    news: news,
     cartItems,
-    total
+    total,
+    message
   });
 };
-
-// // create an order for unregistered
-// export const createNewOrderUnreg = async (email, cartItems) => {
-//   const orderDocRef = firestore.collection('orders').doc();
-//   const createdAt = new Date();
-//   const total = cartItems.reduce(
-//     (accumulatedQuantity, cartItem) =>
-//       accumulatedQuantity + cartItem.quantity * cartItem.price,
-//     0
-//   );
-//   return await orderDocRef.set({
-//     createdAt,
-//     // Name: displayName ? displayName : 'dummy',
-//     // Email: email ? email : 'dummy',
-//     Adress: 'Test adress', //var
-//     Payment: 'Platba kartou', //var
-//     Delivery: 'GLS', // var
-//     Status: 'Objednávka přijata', //conditioned var
-//     cartItems,
-//     total
-//   });
-// };
 
 export const addCollectionAndDocuments = async (
   collectionKey,
