@@ -3,11 +3,15 @@ import { all, call, takeLatest, put, select } from 'redux-saga/effects';
 import UserActionTypes from '../user/user.types';
 import {
   getUserCartRef,
-  createNewOrder
-  // createNewOrderUnreg
+  createNewOrder,
+  getUserOrderRef
 } from '../../firebase/firebase.utils';
 import { selectCurrentUser } from '../user/user.selectors';
-import { clearCart, setCartFromFirebase } from './cart.actions';
+import {
+  clearCart,
+  setCartFromFirebase,
+  newOrderDetails
+} from './cart.actions';
 import { selectCartItems } from './cart.selectors';
 import CartActionTypes from './cart.types';
 
@@ -55,25 +59,25 @@ export function* createNewOrderInFirebase() {
   }
 }
 
-// // NEW ORDER FOR UNREGISTERED
-// export function* createNewOrderInFirebaseUnreg({ payload: email }) {
-//   try {
-//     const cartItems = yield select(selectCartItems);
-//     const orderRef = yield createNewOrderUnreg(email, cartItems);
-//     yield orderRef;
-//   } catch (error) {
-//     console.log(error);
-//     console.log(email);
-//   }
-// }
-
 export function* checkCartFromFirebase({ payload: user }) {
   const cartRef = yield getUserCartRef(user.id);
   const cartSnapshot = yield cartRef.get();
   yield put(setCartFromFirebase(cartSnapshot.data().cartItems));
 }
 
+export function* newOrderDetailsFromFirebase({ payload: user }) {
+  const orderRef = yield getUserOrderRef(user.id);
+  const orderSnapshot = yield orderRef.get();
+  yield put(newOrderDetails(orderSnapshot.data()));
+}
+
 // final saga gen. F
+
+//last one :)
+export function* onOrderSuccessfull() {
+  yield takeLatest(CartActionTypes.NEW_ORDER, newOrderDetailsFromFirebase);
+}
+
 export function* onSignOutSuccess() {
   yield takeLatest(UserActionTypes.SIGN_OUT_SUCCESS, clearCartOnSignOut);
 }
@@ -118,7 +122,8 @@ export function* cartSagas() {
     call(onCartChange),
     call(onUserSignIn),
     call(onOrderSuccessful),
-    call(onNewOrder)
+    call(onNewOrder),
+    call(onOrderSuccessfull)
     // call(onNewOrderUnreg)
   ]);
 }

@@ -41,20 +41,6 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   return userRef;
 };
 
-// get a data from cart collection based on UserId
-export const getUserCartRef = async userId => {
-  const cartsRef = firestore.collection('carts').where('userId', '==', userId);
-  const snapShot = await cartsRef.get();
-
-  if (snapShot.empty) {
-    const cartDocRef = firestore.collection('carts').doc();
-    await cartDocRef.set({ userId, cartItems: [] });
-    return cartDocRef;
-  } else {
-    return snapShot.docs[0].ref;
-  }
-};
-
 // create an order for registered
 export const createNewOrder = async (currentUser, cartItems) => {
   const orderDocRef = firestore.collection('orders').doc();
@@ -90,6 +76,28 @@ export const createNewOrder = async (currentUser, cartItems) => {
     total,
     message
   });
+};
+
+// get a data from cart collection based on UserId
+export const getUserCartRef = async userId => {
+  const cartsRef = firestore.collection('carts').where('userId', '==', userId);
+  const snapShot = await cartsRef.get();
+
+  if (snapShot.empty) {
+    const cartDocRef = firestore.collection('carts').doc();
+    await cartDocRef.set({ userId, cartItems: [] });
+    return cartDocRef;
+  } else {
+    return snapShot.docs[0].ref;
+  }
+};
+
+// get a data from orders collection based on UserId
+export const getUserOrderRef = async userId => {
+  const cartsRef = firestore.collection('orders').where('userId', '==', userId);
+  const snapShot = await cartsRef.get();
+  console.log(snapShot.docs[0].ref);
+  return snapShot.docs[0].ref;
 };
 
 export const addCollectionAndDocuments = async (

@@ -16,6 +16,7 @@ import { selectCartItemsCount } from './redux/cart/cart.selectors';
 // import { selectCollectionsForPreview } from './redux/shop/shop.selectors';
 // import { addCollectionAndDocuments } from './firebase/firebase.utils';
 
+import ThankYouPage from './pages/thankyou/thankyou.component';
 const HomePage = lazy(() => import('./pages/homepage/homepage.component'));
 const ShopPage = lazy(() => import('./pages/shop/shop.component'));
 const CheckoutPage = lazy(() => import('./pages/checkout/checkout.component'));
@@ -57,6 +58,13 @@ const App = ({ currentUser, cartItemsCount }) => {
               path="/signin"
               render={() =>
                 currentUser ? <Redirect to="/" /> : <SignInAndSignUpPage />
+              }
+            />
+            <Route
+              exact
+              path="/thankyou"
+              render={() =>
+                currentUser ? <ThankYouPage /> : <Redirect to="/" />
               }
             />
           </Suspense>

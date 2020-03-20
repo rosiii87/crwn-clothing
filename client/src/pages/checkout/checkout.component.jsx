@@ -1,5 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+
 import { createStructuredSelector } from 'reselect';
 import { Helmet } from 'react-helmet';
 
@@ -113,6 +115,11 @@ const CheckoutPage = ({
     setLegalCheck({ ...legalCheck, [name]: value });
   };
 
+  // usetState & Router -> Redirect
+  const [thankYouPage, setThankYouPage] = useState(false);
+  const thankRef = useRef(thankYouPage);
+  thankRef.current = thankYouPage;
+
   // CONVERTING TO USERREF
   // to be able to use timeout -> and variables from state -> we have to add userRef hooks
   const addRef = useRef(additionalInfo);
@@ -127,6 +134,7 @@ const CheckoutPage = ({
   const handlePay = async event => {
     setTimeout(() => {
       createOrderInFirebase();
+      setThankYouPage(true);
       clearCart();
       clearCartInFirebase();
     }, 2500);
@@ -177,7 +185,7 @@ const CheckoutPage = ({
       <SignUpContainer>
         <SignUpTitle>Finish your order</SignUpTitle>
         <span>Contact info</span>
-        <form className="sign-up-form">
+        <form className="sign-up-form" onSubmit={handlePay}>
           <FormInput
             type="text"
             name="displayName"
@@ -292,14 +300,13 @@ const CheckoutPage = ({
             onChange={handleInfoChange}
             label="Přidat vzkaz k objednávce"
           />
-        </form>
-        <form className="sign-up-form">
           GDPR shit
           <FormInput
             type="checkbox"
             name="legal"
             onChange={handleChecks}
             label="Souhlasím se vším, shut up and take my money"
+            required
           />
           <FormInput
             type="checkbox"
@@ -308,7 +315,9 @@ const CheckoutPage = ({
             label="Nechci nezasílát nenewslettery pokud nedám check!"
           />
           <TotalContainer>TOTAL: ${total}</TotalContainer>
-          <CustomButton onClick={handlePay}>ODESLAT OBJEDNÁVKU</CustomButton>
+          <CustomButton type="submit">ODESLAT OBJEDNÁVKU</CustomButton>
+          {thankYouPage ? <Redirect to="/thankyou" /> : null}
+          {/* {thankYouPage === false && total === 0 ? <Redirect to="/" /> : null} */}
         </form>
       </SignUpContainer>
 

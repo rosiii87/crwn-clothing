@@ -3,7 +3,8 @@ import { addItemToCart, removeItemFromCart } from './cart.utils';
 
 const INITIAL_STATE = {
   hidden: true,
-  cartItems: []
+  cartItems: [],
+  newOrderDetails: []
 };
 
 const cartReducer = (state = INITIAL_STATE, action) => {
@@ -45,6 +46,11 @@ const cartReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         cartItems: state.cartItems
+      };
+    case CartActionTypes.NEW_ORDER:
+      return {
+        ...state,
+        newOrderDetails: action.payload
       };
     default:
       return state;
