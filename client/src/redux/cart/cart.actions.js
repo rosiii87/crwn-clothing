@@ -32,11 +32,6 @@ export const setCartFromFirebase = cartItems => ({
   payload: cartItems
 });
 
-export const newOrderDetails = orderDetails => ({
-  type: CartActionTypes.NEW_ORDER,
-  payload: orderDetails
-});
-
 export const clearCartInFirebase = () => ({
   type: CartActionTypes.CLEAR_CART_IN_FIREBASE
 });

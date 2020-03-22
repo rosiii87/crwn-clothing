@@ -1,17 +1,9 @@
 import { all, call, takeLatest, put, select } from 'redux-saga/effects';
 
 import UserActionTypes from '../user/user.types';
-import {
-  getUserCartRef,
-  createNewOrder,
-  getUserOrderRef
-} from '../../firebase/firebase.utils';
+import { getUserCartRef, createNewOrder } from '../../firebase/firebase.utils';
 import { selectCurrentUser } from '../user/user.selectors';
-import {
-  clearCart,
-  setCartFromFirebase,
-  newOrderDetails
-} from './cart.actions';
+import { clearCart, setCartFromFirebase } from './cart.actions';
 import { selectCartItems } from './cart.selectors';
 import CartActionTypes from './cart.types';
 
@@ -65,18 +57,19 @@ export function* checkCartFromFirebase({ payload: user }) {
   yield put(setCartFromFirebase(cartSnapshot.data().cartItems));
 }
 
-export function* newOrderDetailsFromFirebase({ payload: user }) {
-  const orderRef = yield getUserOrderRef(user.id);
-  const orderSnapshot = yield orderRef.get();
-  yield put(newOrderDetails(orderSnapshot.data()));
-}
+// export function* newOrderDetailsFromFirebase() {
+//   const user = yield select(selectCurrentUser);
+//   const orderRef = yield getUserOrderRef(user.id);
+//   const orderSnapshot = yield orderRef.get();
+//   yield put(newOrderDetails(orderSnapshot.data()));
+// }
 
 // final saga gen. F
 
 //last one :)
-export function* onOrderSuccessfull() {
-  yield takeLatest(CartActionTypes.NEW_ORDER, newOrderDetailsFromFirebase);
-}
+// export function* onOrderSuccessfull() {
+//   yield takeLatest(CartActionTypes.NEW_ORDER, newOrderDetailsFromFirebase);
+// }
 
 export function* onSignOutSuccess() {
   yield takeLatest(UserActionTypes.SIGN_OUT_SUCCESS, clearCartOnSignOut);
@@ -104,13 +97,6 @@ export function* onNewOrder() {
   );
 }
 
-// export function* onNewOrderUnreg() {
-//   yield takeLatest(
-//     CartActionTypes.CREATE_ORDER_IN_FIREBASE,
-//     createNewOrderInFirebaseUnreg
-//   );
-// }
-
 export function* onOrderSuccessful() {
   yield takeLatest(CartActionTypes.CLEAR_CART_IN_FIREBASE, clearCartInFirebase);
 }
@@ -122,8 +108,7 @@ export function* cartSagas() {
     call(onCartChange),
     call(onUserSignIn),
     call(onOrderSuccessful),
-    call(onNewOrder),
-    call(onOrderSuccessfull)
-    // call(onNewOrderUnreg)
+    call(onNewOrder)
+    // call(onOrderSuccessfull)
   ]);
 }

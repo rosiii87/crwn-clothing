@@ -44,11 +44,12 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 // create an order for registered
 export const createNewOrder = async (currentUser, cartItems) => {
   const orderDocRef = firestore.collection('orders').doc();
-  const createdAt = new Date();
+  const createdAt = new Date().toString();
   const {
     displayName,
     email,
     city,
+    // street,
     doprava,
     platba,
     legal,
@@ -60,12 +61,14 @@ export const createNewOrder = async (currentUser, cartItems) => {
       accumulatedQuantity + cartItem.quantity * cartItem.price,
     0
   );
+
   return await orderDocRef.set({
     userId: currentUser.id,
     createdAt,
     Name: displayName,
     Email: email,
     City: city,
+    // Street: street,
     Payment: platba,
     Doprava: doprava,
     Status:
