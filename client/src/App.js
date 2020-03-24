@@ -1,5 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
+
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
@@ -16,7 +17,8 @@ import { selectCartItemsCount } from './redux/cart/cart.selectors';
 // import { selectCollectionsForPreview } from './redux/shop/shop.selectors';
 // import { addCollectionAndDocuments } from './firebase/firebase.utils';
 
-import ThankYouPage from './pages/thankyou/thankyou.component';
+const ThankYouPage = lazy(() => import('./pages/thankyou/thankyou.component'));
+const Account = lazy(() => import('./pages/account/account.component'));
 const HomePage = lazy(() => import('./pages/homepage/homepage.component'));
 const ShopPage = lazy(() => import('./pages/shop/shop.component'));
 const CheckoutPage = lazy(() => import('./pages/checkout/checkout.component'));
@@ -58,6 +60,27 @@ const App = ({ currentUser, cartItemsCount }) => {
               path="/signin"
               render={() =>
                 currentUser ? <Redirect to="/" /> : <SignInAndSignUpPage />
+              }
+            />
+            <Route
+              exact
+              path="/profil"
+              render={() =>
+                !currentUser ? <Redirect to="/signin" /> : <Account />
+              }
+            />
+            <Route
+              exact
+              path="/profil/:userId"
+              render={() =>
+                !currentUser ? <Redirect to="/signin" /> : <Account />
+              }
+            />
+            <Route
+              exact
+              path="/profil/:userId/:orderId"
+              render={() =>
+                !currentUser ? <Redirect to="/signin" /> : <Account />
               }
             />
             <Route

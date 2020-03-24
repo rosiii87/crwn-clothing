@@ -49,7 +49,7 @@ export const createNewOrder = async (currentUser, cartItems) => {
     displayName,
     email,
     city,
-    // street,
+    street,
     doprava,
     platba,
     legal,
@@ -68,7 +68,7 @@ export const createNewOrder = async (currentUser, cartItems) => {
     Name: displayName,
     Email: email,
     City: city,
-    // Street: street,
+    Street: street,
     Payment: platba,
     Doprava: doprava,
     Status:
@@ -134,6 +134,43 @@ export const convertCollectionsSnapshotToMap = collections => {
     accumulator[collection.title.toLowerCase()] = collection;
     return accumulator;
   }, {});
+};
+
+export const convertOrdersSnapshotToMap = orders => {
+  const transformedOrders = orders.docs.map(doc => {
+    const {
+      total,
+      createdAt,
+      Status,
+      City,
+      Street,
+      Payment,
+      Doprava,
+      platba,
+      cartItems,
+      message
+    } = doc.data();
+
+    return {
+      id: doc.id,
+      createdAt,
+      total,
+      Status,
+      City,
+      Street,
+      Payment,
+      Doprava,
+      platba,
+      cartItems,
+      message
+      // details: false
+    };
+  });
+  return transformedOrders;
+  // return transformedOrders.reduce((accumulator, orders) => {
+  //   accumulator[orders.id] = orders;
+  //   return accumulator;
+  // }, {});
 };
 
 export const getCurrentUser = () => {

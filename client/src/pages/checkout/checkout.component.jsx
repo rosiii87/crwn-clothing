@@ -120,6 +120,11 @@ const CheckoutPage = ({
   const thankRef = useRef(thankYouPage);
   thankRef.current = thankYouPage;
 
+  // usetState & Router -> Redirect
+  const [isLoading, setIsLoading] = useState(false);
+  const loadRef = useRef(isLoading);
+  loadRef.current = isLoading;
+
   // CONVERTING TO USERREF
   // to be able to use timeout -> and variables from state -> we have to add userRef hooks
   const addRef = useRef(additionalInfo);
@@ -139,6 +144,7 @@ const CheckoutPage = ({
       clearCartInFirebase();
     }, 2500);
     event.preventDefault();
+    setIsLoading(true);
     editUser({
       city,
       street,
@@ -315,7 +321,11 @@ const CheckoutPage = ({
             label="Nechci nezasílát nenewslettery pokud nedám check!"
           />
           <TotalContainer>TOTAL: ${total}</TotalContainer>
-          <CustomButton type="submit">ODESLAT OBJEDNÁVKU</CustomButton>
+          {isLoading ? (
+            <CustomButton>ZPRACOVÁVÁM...</CustomButton>
+          ) : (
+            <CustomButton type="submit">ODESLAT OBJEDNÁVKU</CustomButton>
+          )}
           {thankYouPage ? <Redirect to="/thankyou" /> : null}
           {/* {thankYouPage === false && total === 0 ? <Redirect to="/" /> : null} */}
         </form>
