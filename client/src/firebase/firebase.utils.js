@@ -94,6 +94,21 @@ export const getUserCartRef = async userId => {
   }
 };
 
+// get a data from cart collection based on UserId
+export const getUserWishRef = async userId => {
+  const wishRef = firestore
+    .collection('wishLists')
+    .where('userId', '==', userId);
+  const snapShot = await wishRef.get();
+  if (snapShot.empty) {
+    const wishDocRef = firestore.collection('wishLists').doc();
+    await wishDocRef.set({ userId, wishItems: [] });
+    return wishDocRef;
+  } else {
+    return snapShot.docs[0].ref;
+  }
+};
+
 // get a data from orders collection based on UserId
 export const getUserOrderRef = async userId => {
   const cartsRef = firestore.collection('orders').where('userId', '==', userId);

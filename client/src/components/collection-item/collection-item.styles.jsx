@@ -37,6 +37,21 @@ export const CollectionItemContainer = styled.div`
   }
 `;
 
+export const AddWishButton = styled(CustomButton)`
+  width: 80%;
+  opacity: 0.7;
+  position: absolute;
+  top: 200px;
+  display: none;
+
+  @media screen and (max-width: 800px) {
+    display: block;
+    opacity: 0.9;
+    min-width: unset;
+    padding: 0 10px;
+  }
+`;
+
 export const AddButton = styled(CustomButton)`
   width: 80%;
   opacity: 0.7;

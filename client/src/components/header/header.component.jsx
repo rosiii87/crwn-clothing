@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
 import CartIcon from '../cart-icon/cart-icon.component';
+import WishIcon from '../wish-icon/wish-icon.component';
+
 import CartDropdown from '../cart-dropdown/cart-dropdown.component';
 import { selectCartHidden } from '../../redux/cart/cart.selectors';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
@@ -17,6 +19,8 @@ import {
   OptionLink
 } from './header.styles';
 
+import { WishContainer } from '../wish-icon/wish-icon.styles';
+
 const Header = ({ currentUser, hidden, signOutStart }) => (
   <HeaderContainer>
     <LogoContainer to="/">
@@ -24,12 +28,14 @@ const Header = ({ currentUser, hidden, signOutStart }) => (
     </LogoContainer>
     <OptionsContainer>
       <OptionLink to="/shop">SHOP</OptionLink>
+      <WishContainer to="/wish-list">
+        <WishIcon />
+      </WishContainer>
       {currentUser ? (
         <OptionLink to={`/profil/${currentUser.displayName}`}>
           {currentUser.displayName}
         </OptionLink>
       ) : null}
-
       {currentUser ? (
         <OptionLink to="/" as="div" onClick={signOutStart}>
           SIGN OUT

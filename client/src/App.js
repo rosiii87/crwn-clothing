@@ -13,6 +13,7 @@ import ErrorBoundary from './components/error-boundary/error-boundary.component'
 import { selectCurrentUser } from './redux/user/user.selectors';
 // import { checkUserSession } from './redux/user/user.actions';
 import { selectCartItemsCount } from './redux/cart/cart.selectors';
+import { selectWishItemsCount } from './redux/wish/wish.selectors';
 
 // import { selectCollectionsForPreview } from './redux/shop/shop.selectors';
 // import { addCollectionAndDocuments } from './firebase/firebase.utils';
@@ -22,11 +23,12 @@ const Account = lazy(() => import('./pages/account/account.component'));
 const HomePage = lazy(() => import('./pages/homepage/homepage.component'));
 const ShopPage = lazy(() => import('./pages/shop/shop.component'));
 const CheckoutPage = lazy(() => import('./pages/checkout/checkout.component'));
+const WishList = lazy(() => import('./pages/wish/wish.component'));
 const SignInAndSignUpPage = lazy(() =>
   import('./pages/sign-in-and-sign-up/sign-in-and-sign-up.component')
 );
 
-const App = ({ currentUser, cartItemsCount }) => {
+const App = ({ currentUser, cartItemsCount, wishItemsCount }) => {
   // useEffect(() => {
   //   checkUserSession();
   // }, [checkUserSession]);
@@ -55,6 +57,14 @@ const App = ({ currentUser, cartItemsCount }) => {
                 cartItemsCount > 0 ? <CheckoutPage /> : <Redirect to="/" />
               }
             />
+            <Route
+              exact
+              path="/wish-list"
+              render={() =>
+                wishItemsCount > 0 ? <WishList /> : <Redirect to="/" />
+              }
+            />
+
             <Route
               exact
               path="/signin"
@@ -99,7 +109,8 @@ const App = ({ currentUser, cartItemsCount }) => {
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
-  cartItemsCount: selectCartItemsCount
+  cartItemsCount: selectCartItemsCount,
+  wishItemsCount: selectWishItemsCount
   // collectionsArray: selectCollectionsForPreview
 });
 
