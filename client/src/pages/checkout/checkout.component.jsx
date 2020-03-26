@@ -56,8 +56,8 @@ const CheckoutPage = ({
 }) => {
   // HANDLERS FOR USER PROFILE LOGIN / REGISTER OR NOTHING
   const [userCredentials, setUserCredentials] = useState({
-    displayName: '',
-    email: '',
+    displayName: user ? user.displayName : '',
+    email: user ? user.email : '',
     password: '',
     confirmPassword: ''
   });
@@ -84,9 +84,9 @@ const CheckoutPage = ({
   // ADDITIONAL ORDER INFO
   // doprava and platba has default state => radio buttons
   const [additionalInfo, setAdditionalInfo] = useState({
-    city: '',
-    street: '',
-    telephone: '',
+    city: user ? user.city : '',
+    street: user ? user.street : '',
+    telephone: user ? user.telephone : '',
     doprava: 'gls',
     platba: 'dobirka',
     message: ''
@@ -103,7 +103,7 @@ const CheckoutPage = ({
   // checkoboxes hook
   const [legalCheck, setLegalCheck] = useState({
     legal: false,
-    news: false
+    news: user ? user.news : false
   });
 
   // checkboxes handlers
@@ -195,16 +195,18 @@ const CheckoutPage = ({
           <FormInput
             type="text"
             name="displayName"
-            value={user ? user.displayName : displayName}
+            value={displayName}
             onChange={handleChange}
             label={user ? "Damn that's cool name" : 'Full Name'}
+            readOnly={user ? true : false}
           />
           <FormInput
             type="email"
             name="email"
-            value={user ? user.email : email}
+            value={email}
             onChange={handleChange}
             label={user ? 'Even better' : 'email'}
+            readOnly={user ? true : false}
           />
           {!user ? (
             <FormInput
@@ -275,6 +277,7 @@ const CheckoutPage = ({
             onChange={handleInfoChange}
             value="gls"
             label="GLS"
+            required
           />
           <FormInput
             type="radio"
@@ -314,12 +317,23 @@ const CheckoutPage = ({
             label="Souhlasím se vším, shut up and take my money"
             required
           />
-          <FormInput
-            type="checkbox"
-            name="news"
-            onChange={handleChecks}
-            label="Nechci nezasílát nenewslettery pokud nedám check!"
-          />
+          {user ? (
+            !user.news ? (
+              <FormInput
+                type="checkbox"
+                name="news"
+                onChange={handleChecks}
+                label="Nechci nezasílát nenewslettery pokud nedám check!"
+              />
+            ) : null
+          ) : (
+            <FormInput
+              type="checkbox"
+              name="news"
+              onChange={handleChecks}
+              label="Nechci nezasílát nenewslettery pokud nedám check!"
+            />
+          )}
           <TotalContainer>TOTAL: ${total}</TotalContainer>
           {isLoading ? (
             <CustomButton>ZPRACOVÁVÁM...</CustomButton>

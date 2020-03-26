@@ -41,7 +41,7 @@ const cartReducer = (state = INITIAL_STATE, action) => {
     case CartActionTypes.SET_CART_FROM_FIREBASE:
       return {
         ...state,
-        cartItems: !state.cartItems ? action.payload : state.cartItems
+        cartItems: !state.cartItems[0] ? action.payload : state.cartItems
       };
     case CartActionTypes.CREATE_ORDER_IN_FIREBASE:
       return {
