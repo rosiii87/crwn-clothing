@@ -28,18 +28,23 @@ const SignInAndSignUpPage = lazy(() =>
   import('./pages/sign-in-and-sign-up/sign-in-and-sign-up.component')
 );
 
-const App = ({ currentUser, cartItemsCount, wishItemsCount }) => {
+const App = ({
+  currentUser,
+  cartItemsCount,
+  wishItemsCount
+  // collectionsArray
+}) => {
   // useEffect(() => {
   //   checkUserSession();
   // }, [checkUserSession]);
 
-  // // IMPORT SHOP DAT WITH MOUNT
+  // IMPORT SHOP DAT WITH MOUNT
   // useEffect(() => {
   //   addCollectionAndDocuments(
   //     'collections',
   //     collectionsArray.map(({ title, items }) => ({ title, items }))
   //   );
-  // }, []);
+  // }, [collectionsArray]);
 
   return (
     <div>

@@ -15,21 +15,29 @@ import {
 } from './collection-item.styles';
 
 const CollectionItem = ({ item, addItem, addWishItem }) => {
-  const { name, price, imageUrl } = item;
+  const { name, price, stock, imageUrl } = item;
 
   return (
     <CollectionItemContainer>
       <BackgroundImage className="image" imageUrl={imageUrl} />
       <CollectionFooterContainer>
-        <NameContainer>{name}</NameContainer>
-        <PriceContainer>{price}</PriceContainer>
+        <NameContainer>
+          {name} | {price} Kč{' '}
+        </NameContainer>
+        <PriceContainer>{stock} ks</PriceContainer>
       </CollectionFooterContainer>
       <AddWishButton onClick={() => addWishItem(item)} inverted>
         Add to wishList
       </AddWishButton>
-      <AddButton onClick={() => addItem(item)} inverted>
-        Add to cart
-      </AddButton>
+      {item.stock > 0 ? (
+        <AddButton onClick={() => addItem(item)} inverted>
+          Add to cart
+        </AddButton>
+      ) : (
+        <AddButton onClick={() => alert('bohužel vyprodáno')} inverted>
+          Vyprodáno
+        </AddButton>
+      )}
     </CollectionItemContainer>
   );
 };

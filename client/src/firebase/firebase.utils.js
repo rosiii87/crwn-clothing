@@ -83,11 +83,16 @@ export const createNewOrder = async (currentUser, cartItems) => {
 
 // get a data from cart collection based on UserId
 export const getUserCartRef = async userId => {
-  const cartsRef = firestore.collection('carts').where('userId', '==', userId);
+  const cartsRef = firestore
+    .collection('carts')
+    .where('userId', '==', userId)
+    .where('createdAt', '>', '946684800')
+    .orderBy('createdAt', 'desc');
   const snapShot = await cartsRef.get();
   if (snapShot.empty) {
     const cartDocRef = firestore.collection('carts').doc();
-    await cartDocRef.set({ userId, cartItems: [] });
+    const createdAt = new Date().toString();
+    await cartDocRef.set({ userId, cartItems: [], createdAt });
     return cartDocRef;
   } else {
     return snapShot.docs[0].ref;
@@ -98,11 +103,14 @@ export const getUserCartRef = async userId => {
 export const getUserWishRef = async userId => {
   const wishRef = firestore
     .collection('wishLists')
-    .where('userId', '==', userId);
+    .where('userId', '==', userId)
+    .where('createdAt', '>', '946684800')
+    .orderBy('createdAt', 'desc');
   const snapShot = await wishRef.get();
   if (snapShot.empty) {
     const wishDocRef = firestore.collection('wishLists').doc();
-    await wishDocRef.set({ userId, wishItems: [] });
+    const createdAt = new Date().toString();
+    await wishDocRef.set({ userId, wishItems: [], createdAt });
     return wishDocRef;
   } else {
     return snapShot.docs[0].ref;
@@ -130,6 +138,46 @@ export const addCollectionAndDocuments = async (
   });
 
   return await batch.commit();
+};
+
+// STOCK UPDATES AFTER ORDER - maybe batch commit later..
+// also -> there is chance for uset getting back from AC with not actual stock
+// that need to be figured out -> maybe same arrayRemove/Union for all cart collections with that item
+export const editQuantityOnStock = async cartItems => {
+  cartItems.forEach(async cartItem => {
+    const newDocRef = firestore
+      .collection('collections')
+      // this .where have to include all keys and values in array :/
+      .where('items', 'array-contains', {
+        id: cartItem.id,
+        imageUrl: cartItem.imageUrl,
+        name: cartItem.name,
+        price: cartItem.price,
+        stock: cartItem.stock
+      });
+    const snapShot = await newDocRef.get();
+    const refObj = snapShot.docs[0].ref;
+
+    // cant just change value in array :( instead have to remove it and added back with diff quantity
+    await refObj.update({
+      items: firebase.firestore.FieldValue.arrayRemove({
+        id: cartItem.id,
+        imageUrl: cartItem.imageUrl,
+        name: cartItem.name,
+        price: cartItem.price,
+        stock: cartItem.stock
+      })
+    });
+    await refObj.update({
+      items: firebase.firestore.FieldValue.arrayUnion({
+        id: cartItem.id,
+        imageUrl: cartItem.imageUrl,
+        name: cartItem.name,
+        price: cartItem.price,
+        stock: cartItem.stock - cartItem.quantity
+      })
+    });
+  });
 };
 
 export const convertCollectionsSnapshotToMap = collections => {

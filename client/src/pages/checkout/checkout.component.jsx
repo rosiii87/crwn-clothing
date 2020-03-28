@@ -48,6 +48,7 @@ const CheckoutPage = ({
   total,
   user,
   clearCart,
+  clearCartInFirebase,
   createOrderInFirebase,
   signUpStart,
   emailSignInStart,

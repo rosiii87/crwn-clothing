@@ -63,5 +63,5 @@ export function* onWishChange() {
 }
 
 export function* wishSagas() {
-  yield all([call(onWishChange)]);
+  yield all([call(onWishChange), call(onSignOutSuccess), call(onUserSignIn)]);
 }

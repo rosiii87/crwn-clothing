@@ -1,7 +1,11 @@
 import { all, call, takeLatest, put, select } from 'redux-saga/effects';
 
 import UserActionTypes from '../user/user.types';
-import { getUserCartRef, createNewOrder } from '../../firebase/firebase.utils';
+import {
+  getUserCartRef,
+  createNewOrder,
+  editQuantityOnStock
+} from '../../firebase/firebase.utils';
 import { selectCurrentUser } from '../user/user.selectors';
 import { clearCart, setCartFromFirebase } from './cart.actions';
 import { selectCartItems } from './cart.selectors';
@@ -25,7 +29,7 @@ export function* updateCartInFirebase() {
   }
 }
 
-export function* clearCartInFirebase() {
+export function* clearCartInFirebaseOnOrder() {
   const currentUser = yield select(selectCurrentUser);
   if (currentUser) {
     try {
@@ -37,7 +41,7 @@ export function* clearCartInFirebase() {
   }
 }
 
-// NEW ORDER FOR REGISTERED
+// NEW ORDER
 export function* createNewOrderInFirebase() {
   const currentUser = yield select(selectCurrentUser);
   if (currentUser) {
@@ -45,6 +49,7 @@ export function* createNewOrderInFirebase() {
       const cartItems = yield select(selectCartItems);
       const orderRef = yield createNewOrder(currentUser, cartItems);
       yield orderRef;
+      yield editQuantityOnStock(cartItems);
     } catch (error) {
       console.log(error);
     }
@@ -56,20 +61,6 @@ export function* checkCartFromFirebase({ payload: user }) {
   const cartSnapshot = yield cartRef.get();
   yield put(setCartFromFirebase(cartSnapshot.data().cartItems));
 }
-
-// export function* newOrderDetailsFromFirebase() {
-//   const user = yield select(selectCurrentUser);
-//   const orderRef = yield getUserOrderRef(user.id);
-//   const orderSnapshot = yield orderRef.get();
-//   yield put(newOrderDetails(orderSnapshot.data()));
-// }
-
-// final saga gen. F
-
-//last one :)
-// export function* onOrderSuccessfull() {
-//   yield takeLatest(CartActionTypes.NEW_ORDER, newOrderDetailsFromFirebase);
-// }
 
 export function* onSignOutSuccess() {
   yield takeLatest(UserActionTypes.SIGN_OUT_SUCCESS, clearCartOnSignOut);
@@ -98,7 +89,10 @@ export function* onNewOrder() {
 }
 
 export function* onOrderSuccessful() {
-  yield takeLatest(CartActionTypes.CLEAR_CART_IN_FIREBASE, clearCartInFirebase);
+  yield takeLatest(
+    CartActionTypes.CLEAR_CART_IN_FIREBASE,
+    clearCartInFirebaseOnOrder
+  );
 }
 
 // connecting sagas -> root-saga -> store
