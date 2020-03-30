@@ -1,11 +1,7 @@
 import { all, call, takeLatest, put, select } from 'redux-saga/effects';
 
 import UserActionTypes from '../user/user.types';
-import {
-  getUserCartRef,
-  createNewOrder,
-  editQuantityOnStock
-} from '../../firebase/firebase.utils';
+import { getUserCartRef, createNewOrder } from '../../firebase/firebase.utils';
 import { selectCurrentUser } from '../user/user.selectors';
 import { clearCart, setCartFromFirebase } from './cart.actions';
 import { selectCartItems } from './cart.selectors';
@@ -23,6 +19,9 @@ export function* updateCartInFirebase() {
       const cartRef = yield getUserCartRef(currentUser.id);
       const cartItems = yield select(selectCartItems);
       yield cartRef.update({ cartItems });
+      // taking item ids solo -> for feature quering in Firestore :/
+      let itemIds = cartItems.map(({ id }) => id);
+      yield cartRef.update({ itemIds });
     } catch (error) {
       console.log(error);
     }
@@ -34,7 +33,7 @@ export function* clearCartInFirebaseOnOrder() {
   if (currentUser) {
     try {
       const cartRef = yield getUserCartRef(currentUser.id);
-      yield cartRef.update({ cartItems: [] });
+      yield cartRef.update({ cartItems: [], itemIds: [] });
     } catch (error) {
       console.log(error);
     }
@@ -49,7 +48,6 @@ export function* createNewOrderInFirebase() {
       const cartItems = yield select(selectCartItems);
       const orderRef = yield createNewOrder(currentUser, cartItems);
       yield orderRef;
-      yield editQuantityOnStock(cartItems);
     } catch (error) {
       console.log(error);
     }

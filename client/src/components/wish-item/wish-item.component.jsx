@@ -7,6 +7,8 @@ import {
   removeItem
 } from '../../redux/wish/wish.actions';
 
+import { addItem } from '../../redux/cart/cart.actions';
+
 import {
   WhishListItemContainer,
   ImageContainer,
@@ -15,7 +17,13 @@ import {
   RemoveButtonContainer
 } from './wish-item.styles';
 
-const WishItem = ({ wishItem, addWishItem, clearItem, removeItem }) => {
+const WishItem = ({
+  addItem,
+  wishItem,
+  addWishItem,
+  clearItem,
+  removeItem
+}) => {
   const { name, imageUrl, price, quantity } = wishItem;
   return (
     <WhishListItemContainer>
@@ -29,6 +37,12 @@ const WishItem = ({ wishItem, addWishItem, clearItem, removeItem }) => {
         <div onClick={() => addWishItem(wishItem)}>&#10095;</div>
       </QuantityContainer>
       <TextContainer>{price}</TextContainer>
+      {wishItem.stock > 0 ? (
+        <TextContainer onClick={() => addItem(wishItem)}>buy</TextContainer>
+      ) : (
+        <TextContainer>Sold Out</TextContainer>
+      )}
+
       <RemoveButtonContainer onClick={() => clearItem(wishItem)}>
         &#10005;
       </RemoveButtonContainer>
@@ -39,7 +53,8 @@ const WishItem = ({ wishItem, addWishItem, clearItem, removeItem }) => {
 const mapDispatchToProps = dispatch => ({
   clearItem: item => dispatch(clearItemFromWish(item)),
   addWishItem: item => dispatch(addWishItem(item)),
-  removeItem: item => dispatch(removeItem(item))
+  removeItem: item => dispatch(removeItem(item)),
+  addItem: item => dispatch(addItem(item))
 });
 
 export default connect(null, mapDispatchToProps)(WishItem);

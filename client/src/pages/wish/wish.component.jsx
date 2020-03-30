@@ -41,6 +41,9 @@ const WishList = ({ wishItems }) => {
           <span>Price</span>
         </HeaderBlockContainer>
         <HeaderBlockContainer>
+          <span>Add to cart</span>
+        </HeaderBlockContainer>
+        <HeaderBlockContainer>
           <span>Remove</span>
         </HeaderBlockContainer>
       </CheckoutHeaderContainer>
