@@ -76,47 +76,62 @@ exports.updateStock = functions.firestore
     }
   });
 
-// // after receiveing order -> update carts
-// exports.updateCartsStock = functions.firestore
-//   .document('orders/{orderID}')
-//   .onCreate((snapshot, context) => {
-//     const orderData = snapshot.data();
-//     if (orderData) {
-//       const { cartItems } = orderData;
-//       cartItems.forEach(async cartItem => {
-//         const postCollection = db.collection('carts');
-//         const postQuery = postCollection.where(
-//           'itemIds',
-//           'array-contains',
-//           cartItem.id
-//         );
+// after receiveing order -> update carts
+exports.updateCartsStock = functions.firestore
+  .document('orders/{orderID}')
+  .onCreate((snapshot, context) => {
+    const orderData = snapshot.data();
+    if (orderData) {
+      const { cartItems } = orderData;
+      cartItems.forEach(async cartItem => {
+        const postCollection = db.collectionGroup('cartItems');
+        const postQuery = postCollection.where('id', '==', cartItem.id);
 
-//         const querySnapshot = await postQuery.get();
-//         if (querySnapshot.empty) {
-//           return null;
-//         } else {
-//           let batch = db.batch();
-//           querySnapshot.forEach(doc => {
-//             batch.update(doc.ref, {
-//               cartItems: admin.firestore.FieldValue.arrayRemove({
-//                 id: cartItem.id
-//               })
-//             });
-//             batch.update(doc.ref, {
-//               cartItems: admin.firestore.FieldValue.arrayUnion({
-//                 id: cartItem.id,
-//                 imageUrl: cartItem.imageUrl,
-//                 name: cartItem.name,
-//                 price: cartItem.price,
-//                 quantity: 1,
-//                 stock: cartItem.stock - cartItem.quantity
-//               })
-//             });
-//           });
-//           return batch.commit();
-//         }
-//       });
-//     } else {
-//       return null;
-//     }
-//   });
+        const { quantity } = cartItem;
+        const querySnapshot = await postQuery.get();
+        if (querySnapshot.empty) {
+          return null;
+        } else {
+          let batch = db.batch();
+          querySnapshot.forEach(doc => {
+            batch.update(doc.ref, {
+              stock: admin.firestore.FieldValue.increment(-quantity)
+            });
+          });
+          return batch.commit();
+        }
+      });
+    } else {
+      return null;
+    }
+  });
+
+// after receiveing order -> update carts
+exports.updateWishStock = functions.firestore
+  .document('orders/{orderID}')
+  .onCreate((snapshot, context) => {
+    const orderData = snapshot.data();
+    if (orderData) {
+      const { cartItems } = orderData;
+      cartItems.forEach(async cartItem => {
+        const postCollection = db.collectionGroup('wishItems');
+        const postQuery = postCollection.where('id', '==', cartItem.id);
+
+        const { quantity } = cartItem;
+        const querySnapshot = await postQuery.get();
+        if (querySnapshot.empty) {
+          return null;
+        } else {
+          let batch = db.batch();
+          querySnapshot.forEach(doc => {
+            batch.update(doc.ref, {
+              stock: admin.firestore.FieldValue.increment(-quantity)
+            });
+          });
+          return batch.commit();
+        }
+      });
+    } else {
+      return null;
+    }
+  });
