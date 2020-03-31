@@ -16,6 +16,7 @@ import { selectCartItemsCount } from './redux/cart/cart.selectors';
 import { selectWishItemsCount } from './redux/wish/wish.selectors';
 
 // import { selectCollectionsForPreview } from './redux/shop/shop.selectors';
+// import { selectStockLoadingForPreview } from './redux/shop/shop.selectors';
 // import { addCollectionAndDocuments } from './firebase/firebase.utils';
 
 const ThankYouPage = lazy(() => import('./pages/thankyou/thankyou.component'));
@@ -32,7 +33,8 @@ const App = ({
   currentUser,
   cartItemsCount,
   wishItemsCount
-  // collectionsArray
+  // collectionsArray,
+  // stockArray
 }) => {
   // useEffect(() => {
   //   checkUserSession();
@@ -42,9 +44,25 @@ const App = ({
   // useEffect(() => {
   //   addCollectionAndDocuments(
   //     'collections',
-  //     collectionsArray.map(({ title, items }) => ({ title, items }))
+  //     collectionsArray.map(({ title, items }) => ({
+  //       title,
+  //       items
+  //     }))
   //   );
   // }, [collectionsArray]);
+
+  // useEffect(() => {
+  //   addCollectionAndDocuments(
+  //     'stock',
+  //     stockArray.map(({ id, name, imageUrl, price, stock }) => ({
+  //       id,
+  //       name,
+  //       imageUrl,
+  //       price,
+  //       stock
+  //     }))
+  //   );
+  // }, [stockArray]);
 
   return (
     <div>
@@ -116,6 +134,7 @@ const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
   cartItemsCount: selectCartItemsCount,
   wishItemsCount: selectWishItemsCount
+  // stockArray: selectStockLoadingForPreview
   // collectionsArray: selectCollectionsForPreview
 });
 

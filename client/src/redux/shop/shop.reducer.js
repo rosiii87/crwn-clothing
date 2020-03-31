@@ -1,9 +1,11 @@
 import ShopActionTypes from './shop.types';
 // import SHOP_DATA from './shop.data';
+// import STOCK_DATA from './stock.data';
 
 const INITIAL_STATE = {
   collections: null,
   // collections: SHOP_DATA,
+  // stockLoading: STOCK_DATA,
   isFetching: false,
   errorMessage: undefined
 };

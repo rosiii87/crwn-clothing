@@ -140,47 +140,6 @@ export const addCollectionAndDocuments = async (
   return await batch.commit();
 };
 
-// // STOCK UPDATES AFTER ORDER - NOW IN CLOUD FUNCTIONS
-// // also -> there is chance for uset getting back from AC with not actual stock
-// // that need to be figured out -> maybe same arrayRemove/Union for all cart collections with that item
-// export const editQuantityOnStock = async cartItems => {
-//   cartItems.forEach(async cartItem => {
-//     // FIRST FOR UPDATING COLLECTIONS
-//     const collRef = firestore
-//       .collection('collections')
-//       // this .where have to include all keys and values in array :/
-//       .where('items', 'array-contains', {
-//         id: cartItem.id,
-//         imageUrl: cartItem.imageUrl,
-//         name: cartItem.name,
-//         price: cartItem.price,
-//         stock: cartItem.stock
-//       });
-//     const collSnapShot = await collRef.get();
-//     const collRefObj = collSnapShot.docs[0].ref;
-
-//     // cant just change value in array :( instead have to remove it and added back with diff quantity
-//     await collRefObj.update({
-//       items: firebase.firestore.FieldValue.arrayRemove({
-//         id: cartItem.id,
-//         imageUrl: cartItem.imageUrl,
-//         name: cartItem.name,
-//         price: cartItem.price,
-//         stock: cartItem.stock
-//       })
-//     });
-//     await collRefObj.update({
-//       items: firebase.firestore.FieldValue.arrayUnion({
-//         id: cartItem.id,
-//         imageUrl: cartItem.imageUrl,
-//         name: cartItem.name,
-//         price: cartItem.price,
-//         stock: cartItem.stock - cartItem.quantity
-//       })
-//     });
-//   });
-// };
-
 export const convertCollectionsSnapshotToMap = collections => {
   const transformedCollection = collections.docs.map(doc => {
     const { title, items } = doc.data();

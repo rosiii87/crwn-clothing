@@ -27,3 +27,15 @@ export const selectIsCollectionsLoaded = createSelector(
   [selectShop],
   shop => !!shop.collections
 );
+
+// stock update
+export const selectStockLoading = createSelector(
+  [selectShop],
+  shop => shop.stockLoading
+);
+
+export const selectStockLoadingForPreview = createSelector(
+  [selectStockLoading],
+  stockLoading =>
+    stockLoading ? Object.keys(stockLoading).map(key => stockLoading[key]) : []
+);
