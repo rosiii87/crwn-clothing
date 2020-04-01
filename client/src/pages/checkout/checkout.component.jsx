@@ -71,6 +71,10 @@ const CheckoutPage = ({
   };
 
   const handleLogin = async event => {
+    setTimeout(() => {
+      window.location.reload();
+      return false;
+    }, 3500);
     event.preventDefault();
     emailSignInStart(email, password);
   };
@@ -95,7 +99,6 @@ const CheckoutPage = ({
 
   // addInfo handlers
   const handleInfoChange = event => {
-    event.preventDefault();
     const { name, value } = event.target;
 
     setAdditionalInfo({ ...additionalInfo, [name]: value });
@@ -109,7 +112,6 @@ const CheckoutPage = ({
 
   // checkboxes handlers
   const handleChecks = event => {
-    event.preventDefault();
     const { name } = event.target;
     const value = event.target.checked;
 

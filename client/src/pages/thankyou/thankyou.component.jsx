@@ -11,6 +11,7 @@ import Spinner from '../../components/spinner/spinner.component';
 function useOrderDetails(userId) {
   const [lastestOrderDetails, setLastestOrderDetails] = useState({
     userID: '',
+    orderId: 0,
     createdAt: '',
     Name: '',
     Email: '',
@@ -56,7 +57,10 @@ function ThankYouPage({ user }) {
         <Spinner />
       ) : (
         <div>
-          <h2>Vaše objednávka byla úspěšně přijata!</h2>
+          <h2>
+            Vaše objednávka č.<strong>{orderDetails.orderId}</strong> byla
+            úspěšně přijata!
+          </h2>
           <ul>
             <li>
               <span>Status: {orderDetails.Status}</span>

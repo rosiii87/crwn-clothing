@@ -45,6 +45,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 export const createNewOrder = async (currentUser, cartItems) => {
   const orderDocRef = firestore.collection('orders').doc();
   const createdAt = new Date().toString();
+  const orderId = Math.floor(Math.random() * 1000000000);
   const {
     displayName,
     email,
@@ -63,6 +64,7 @@ export const createNewOrder = async (currentUser, cartItems) => {
   );
 
   return await orderDocRef.set({
+    orderId,
     userId: currentUser.id,
     createdAt,
     Name: displayName,
@@ -162,6 +164,7 @@ export const convertOrdersSnapshotToMap = orders => {
   const transformedOrders = orders.docs.map(doc => {
     const {
       total,
+      orderId,
       createdAt,
       Status,
       City,
@@ -174,7 +177,7 @@ export const convertOrdersSnapshotToMap = orders => {
     } = doc.data();
 
     return {
-      id: doc.id,
+      orderId,
       createdAt,
       total,
       Status,

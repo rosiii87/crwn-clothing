@@ -34,17 +34,17 @@ const Account = ({ user, fetchOrdersStart, orders }) => {
           <>
             <h3>Minulé objednávky</h3>
             {orders.map(order => (
-              <table key={order.id}>
+              <table key={order.orderId}>
                 <tbody>
                   <tr>
-                    <td>{order.id}&nbsp;&nbsp;&nbsp;</td>
+                    <td>{order.orderId}&nbsp;&nbsp;&nbsp;</td>
                     <td>{order.createdAt.split('G')[0]}&nbsp;&nbsp;&nbsp;</td>
                     <td>{order.total} Kč&nbsp;&nbsp;&nbsp;</td>
                     <td>
                       <strong>{order.Status}&nbsp;&nbsp;&nbsp;</strong>
                     </td>
                     <td>
-                      <Link to={`/profil/${user.displayName}/${order.id}`}>
+                      <Link to={`/profil/${user.displayName}/${order.orderId}`}>
                         Details
                       </Link>
                     </td>
@@ -53,7 +53,7 @@ const Account = ({ user, fetchOrdersStart, orders }) => {
                     <td>
                       <Route
                         exact
-                        path={`/profil/${user.displayName}/${order.id}`}
+                        path={`/profil/${user.displayName}/${order.orderId}`}
                       >
                         <>
                           {order.cartItems.map(item => (
