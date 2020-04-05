@@ -1,5 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
+// import { Route } from 'react-router-dom';
+import slugify from 'slugify';
 
 import { addItem } from '../../redux/cart/cart.actions';
 import { addWishItem } from '../../redux/wish/wish.actions';
@@ -11,15 +13,20 @@ import {
   AddWishButton,
   BackgroundImage,
   NameContainer,
-  PriceContainer
+  PriceContainer,
+  BackgroundLink,
 } from './collection-item.styles';
 
-const CollectionItem = ({ item, addItem, addWishItem }) => {
-  const { name, price, stock, imageUrl } = item;
+const CollectionItem = ({ routeName, item, addItem, addWishItem }) => {
+  const { id, name, price, stock, imageUrl } = item;
+  const slug = slugify(name).toLowerCase();
 
   return (
     <CollectionItemContainer>
-      <BackgroundImage className="image" imageUrl={imageUrl} />
+      <BackgroundLink to={`/shop/${routeName}/${slug}/${id}`}>
+        <BackgroundImage className="image" imageUrl={imageUrl} />
+      </BackgroundLink>
+
       <CollectionFooterContainer>
         <NameContainer>
           {name} | {price} Kč{' '}
@@ -42,9 +49,9 @@ const CollectionItem = ({ item, addItem, addWishItem }) => {
   );
 };
 
-const mapDispatchToProps = dispatch => ({
-  addItem: item => dispatch(addItem(item)),
-  addWishItem: item => dispatch(addWishItem(item))
+const mapDispatchToProps = (dispatch) => ({
+  addItem: (item) => dispatch(addItem(item)),
+  addWishItem: (item) => dispatch(addWishItem(item)),
 });
 
 export default connect(null, mapDispatchToProps)(CollectionItem);

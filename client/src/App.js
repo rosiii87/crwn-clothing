@@ -32,7 +32,7 @@ const SignInAndSignUpPage = lazy(() =>
 const App = ({
   currentUser,
   cartItemsCount,
-  wishItemsCount
+  wishItemsCount,
   // collectionsArray,
   // stockArray
 }) => {
@@ -133,7 +133,7 @@ const App = ({
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
   cartItemsCount: selectCartItemsCount,
-  wishItemsCount: selectWishItemsCount
+  wishItemsCount: selectWishItemsCount,
   // stockArray: selectStockLoadingForPreview
   // collectionsArray: selectCollectionsForPreview
 });

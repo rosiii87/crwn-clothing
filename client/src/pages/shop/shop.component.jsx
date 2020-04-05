@@ -12,6 +12,9 @@ const CollectionsOverviewContainer = lazy(() =>
 const CollectionPageContainer = lazy(() =>
   import('../collection/collection.container')
 );
+const ProductDetailContainer = lazy(() =>
+  import('../detail/product-detail.container')
+);
 
 const ShopPage = ({ fetchCollectionsStart, match }) => {
   useEffect(() => {
@@ -34,16 +37,22 @@ const ShopPage = ({ fetchCollectionsStart, match }) => {
           component={CollectionsOverviewContainer}
         />
         <Route
+          exact
           path={`${match.path}/:collectionId`}
           component={CollectionPageContainer}
+        />
+        <Route
+          exact
+          path={`${match.path}/:collectionId/:slugId/:productId`}
+          component={ProductDetailContainer}
         />
       </Suspense>
     </div>
   );
 };
 
-const mapDispatchToProps = dispatch => ({
-  fetchCollectionsStart: () => dispatch(fetchCollectionsStart())
+const mapDispatchToProps = (dispatch) => ({
+  fetchCollectionsStart: () => dispatch(fetchCollectionsStart()),
 });
 
 export default connect(null, mapDispatchToProps)(ShopPage);

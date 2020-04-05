@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import CustomButton from '../custom-button/custom-button.component';
+import { Link } from 'react-router-dom';
 
 export const CollectionItemContainer = styled.div`
   width: 22vw;
@@ -67,12 +68,18 @@ export const AddButton = styled(CustomButton)`
   }
 `;
 
-export const BackgroundImage = styled.div`
+export const BackgroundLink = styled(Link)`
   width: 100%;
   height: 95%;
+  margin-bottom: 5px;
+`;
+
+export const BackgroundImage = styled.div`
+  width: 100%;
+  height: 100%;
   background-size: cover;
   background-position: center;
-  margin-bottom: 5px;
+
   background-image: ${({ imageUrl }) => `url(${imageUrl})`};
 `;
 
