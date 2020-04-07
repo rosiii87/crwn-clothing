@@ -28,6 +28,16 @@ export const selectIsCollectionsLoaded = createSelector(
   (shop) => !!shop.collections
 );
 
+// STOCK SELECTORS
+export const selectStock = createSelector([selectShop], (shop) => shop.stock);
+
+export const selectByTags = (searchTerm) =>
+  createSelector([selectStock], (stock) =>
+    stock
+      ? stock.filter(({ tags }) => tags.includes(searchTerm.toLowerCase()))
+      : []
+  );
+
 // ONE TIMERS
 // stock update - using only with hard update for firestore
 export const selectStockLoading = createSelector(

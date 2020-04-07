@@ -10,7 +10,7 @@ const config = {
   storageBucket: 'crwn-db-e0911.appspot.com',
   messagingSenderId: '143749898701',
   appId: '1:143749898701:web:160ace1d9ed359b4796484',
-  measurementId: 'G-HNRMM23N93'
+  measurementId: 'G-HNRMM23N93',
 };
 
 firebase.initializeApp(config);
@@ -31,7 +31,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
         displayName,
         email,
         createdAt,
-        ...additionalData
+        ...additionalData,
       });
     } catch (error) {
       console.log('error creating user', error.message);
@@ -55,7 +55,7 @@ export const createNewOrder = async (currentUser, cartItems) => {
     platba,
     legal,
     news,
-    message
+    message,
   } = currentUser;
   const total = cartItems.reduce(
     (accumulatedQuantity, cartItem) =>
@@ -79,12 +79,12 @@ export const createNewOrder = async (currentUser, cartItems) => {
     news: news,
     cartItems,
     total,
-    message
+    message,
   });
 };
 
 // get a data from cart collection based on UserId
-export const getUserCartRef = async userId => {
+export const getUserCartRef = async (userId) => {
   const cartsRef = firestore
     .collection('carts')
     .where('userId', '==', userId)
@@ -102,7 +102,7 @@ export const getUserCartRef = async userId => {
 };
 
 // get a data from cart collection based on UserId
-export const getUserWishRef = async userId => {
+export const getUserWishRef = async (userId) => {
   const wishRef = firestore
     .collection('wishLists')
     .where('userId', '==', userId)
@@ -120,7 +120,7 @@ export const getUserWishRef = async userId => {
 };
 
 // get a data from orders collection based on UserId
-export const getUserOrderRef = async userId => {
+export const getUserOrderRef = async (userId) => {
   const cartsRef = firestore.collection('orders').where('userId', '==', userId);
   const snapShot = await cartsRef.get();
   console.log(snapShot.docs[0].ref);
@@ -134,7 +134,7 @@ export const addCollectionAndDocuments = async (
   const collectionRef = firestore.collection(collectionKey);
 
   const batch = firestore.batch();
-  objectsToAdd.forEach(obj => {
+  objectsToAdd.forEach((obj) => {
     const newDocRef = collectionRef.doc();
     batch.set(newDocRef, obj);
   });
@@ -142,15 +142,15 @@ export const addCollectionAndDocuments = async (
   return await batch.commit();
 };
 
-export const convertCollectionsSnapshotToMap = collections => {
-  const transformedCollection = collections.docs.map(doc => {
+export const convertCollectionsSnapshotToMap = (collections) => {
+  const transformedCollection = collections.docs.map((doc) => {
     const { title, items } = doc.data();
 
     return {
       routeName: encodeURI(title.toLowerCase()),
       id: doc.id,
       title,
-      items
+      items,
     };
   });
 
@@ -160,8 +160,30 @@ export const convertCollectionsSnapshotToMap = collections => {
   }, {});
 };
 
-export const convertOrdersSnapshotToMap = orders => {
-  const transformedOrders = orders.docs.map(doc => {
+export const convertStockSnapshotToMap = (stock) => {
+  const transformedStock = stock.docs.map((doc) => {
+    const { id, collection, imageUrl, name, price, stock, tags } = doc.data();
+
+    return {
+      id,
+      collection,
+      imageUrl,
+      name,
+      price,
+      stock,
+      tags,
+    };
+  });
+  return transformedStock;
+
+  // return transformedCollection.reduce((accumulator, collection) => {
+  //   accumulator[collection.title.toLowerCase()] = collection;
+  //   return accumulator;
+  // }, {});
+};
+
+export const convertOrdersSnapshotToMap = (orders) => {
+  const transformedOrders = orders.docs.map((doc) => {
     const {
       total,
       orderId,
@@ -173,7 +195,7 @@ export const convertOrdersSnapshotToMap = orders => {
       Doprava,
       platba,
       cartItems,
-      message
+      message,
     } = doc.data();
 
     return {
@@ -187,7 +209,7 @@ export const convertOrdersSnapshotToMap = orders => {
       Doprava,
       platba,
       cartItems,
-      message
+      message,
       // details: false
     };
   });
@@ -200,7 +222,7 @@ export const convertOrdersSnapshotToMap = orders => {
 
 export const getCurrentUser = () => {
   return new Promise((resolve, reject) => {
-    const unsubscribe = auth.onAuthStateChanged(userAuth => {
+    const unsubscribe = auth.onAuthStateChanged((userAuth) => {
       unsubscribe();
       resolve(userAuth);
     }, reject);

@@ -2,6 +2,7 @@ import React, { Profiler } from 'react';
 import { Helmet } from 'react-helmet';
 
 import Directory from '../../components/directory/directory.component';
+import SearchBar from '../../components/search/search.component';
 
 import { HomePageContainer } from './homepage.styles';
 
@@ -14,7 +15,7 @@ const HomePage = () => (
         console.log({
           id,
           phase,
-          actualDuration
+          actualDuration,
         });
       }}
     >
@@ -24,6 +25,7 @@ const HomePage = () => (
           content="Homepage of CRWN clothing - where to buy style"
         />
       </Helmet>
+      <SearchBar />
       <Directory />
     </Profiler>
   </HomePageContainer>

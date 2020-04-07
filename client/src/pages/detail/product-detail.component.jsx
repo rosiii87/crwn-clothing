@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
+import { Link } from 'react-router-dom';
 
 import { selectCollection } from '../../redux/shop/shop.selectors';
 import { addItem } from '../../redux/cart/cart.actions';
@@ -27,7 +28,8 @@ const ProductDetail = ({ collection, productId, addItem, addWishItem }) => {
         <meta name="description" content={name} />
       </Helmet>
       <div>
-        shop / {title} / {name}
+        <Link to="/shop">shop</Link> /{' '}
+        <Link to={`/shop/${title.toLowerCase()}`}>{title}</Link> / {name}
       </div>
       <h1>{name}</h1>
       <img src={imageUrl} alt={name}></img>
@@ -39,7 +41,7 @@ const ProductDetail = ({ collection, productId, addItem, addWishItem }) => {
       ) : (
         <button onClick={() => alert('bohužel vyprodáno')}>Vyprodáno</button>
       )}
-      <h3>Other items from category</h3>
+      <h3>Other items from {title}'s category</h3>
       {items
         .filter((item, idx) => idx < 4)
         .map((item) => (

@@ -1,9 +1,10 @@
 import ShopActionTypes from './shop.types';
 // import SHOP_DATA from './shop.data';
-// import STOCK_DATA from './stock.data';
+// import STOCK_DATA from './stock.data.js';
 
 const INITIAL_STATE = {
   collections: null,
+  stock: null,
   // collections: SHOP_DATA,
   // stockLoading: STOCK_DATA,
   isFetching: false,
@@ -13,6 +14,7 @@ const INITIAL_STATE = {
 const shopReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case ShopActionTypes.FETCH_COLLECTIONS_START:
+    case ShopActionTypes.FETCH_STOCK_START:
       return {
         ...state,
         isFetching: true,
@@ -23,17 +25,19 @@ const shopReducer = (state = INITIAL_STATE, action) => {
         isFetching: false,
         collections: action.payload,
       };
+    case ShopActionTypes.FETCH_STOCK_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        stock: action.payload,
+      };
     case ShopActionTypes.FETCH_COLLECTIONS_FAILURE:
+    case ShopActionTypes.FETCH_STOCK_FAILURE:
       return {
         ...state,
         isFetching: false,
         errorMessage: action.payload,
       };
-    // case ShopActionTypes.FILTER_BY_VALUE:
-    //   return {
-    //     ...state,
-    //     collections: action.payload,
-    //   };
     default:
       return state;
   }

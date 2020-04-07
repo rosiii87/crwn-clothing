@@ -3,7 +3,10 @@ import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 
-import { fetchCollectionsStart } from '../../redux/shop/shop.actions';
+import {
+  fetchCollectionsStart,
+  fetchStockStart,
+} from '../../redux/shop/shop.actions';
 import Spinner from '../../components/spinner/spinner.component';
 
 const CollectionsOverviewContainer = lazy(() =>
@@ -15,11 +18,15 @@ const CollectionPageContainer = lazy(() =>
 const ProductDetailContainer = lazy(() =>
   import('../detail/product-detail.container')
 );
+const SearchPageContainer = lazy(() =>
+  import('../search-result/search-result.container')
+);
 
-const ShopPage = ({ fetchCollectionsStart, match }) => {
+const ShopPage = ({ fetchCollectionsStart, fetchStockStart, match }) => {
   useEffect(() => {
     fetchCollectionsStart();
-  }, [fetchCollectionsStart]); // render only if fetchcollection start changes -> not to render multiple times
+    fetchStockStart();
+  }, [fetchCollectionsStart, fetchStockStart]); // render only if fetchcollection start changes -> not to render multiple times
 
   return (
     <div className="shop-page">
@@ -46,6 +53,11 @@ const ShopPage = ({ fetchCollectionsStart, match }) => {
           path={`${match.path}/:collectionId/:slugId/:productId`}
           component={ProductDetailContainer}
         />
+        <Route
+          exact
+          path={`${match.path}/hledat/:searchTermId`}
+          component={SearchPageContainer}
+        />
       </Suspense>
     </div>
   );
@@ -53,6 +65,7 @@ const ShopPage = ({ fetchCollectionsStart, match }) => {
 
 const mapDispatchToProps = (dispatch) => ({
   fetchCollectionsStart: () => dispatch(fetchCollectionsStart()),
+  fetchStockStart: () => dispatch(fetchStockStart()),
 });
 
 export default connect(null, mapDispatchToProps)(ShopPage);

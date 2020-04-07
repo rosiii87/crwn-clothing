@@ -19,6 +19,20 @@ export const fetchCollectionsFailure = (errorMessage) => ({
   payload: errorMessage,
 });
 
+export const fetchStockStart = () => ({
+  type: ShopActionTypes.FETCH_STOCK_START,
+});
+
+export const fetchStockSuccess = (stockMap) => ({
+  type: ShopActionTypes.FETCH_STOCK_SUCCESS,
+  payload: stockMap,
+});
+
+export const fetchStockFailure = (errorMessage) => ({
+  type: ShopActionTypes.FETCH_STOCK_FAILURE,
+  payload: errorMessage,
+});
+
 // export const filterByValue = (collections) => ({
 //   type: ShopActionTypes.FILTER_BY_VALUE,
 //   payload: collections,

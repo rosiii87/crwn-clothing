@@ -34,7 +34,7 @@ const App = ({
   cartItemsCount,
   wishItemsCount,
   // collectionsArray,
-  // stockArray
+  // stockArray,
 }) => {
   // useEffect(() => {
   //   checkUserSession();
@@ -46,23 +46,27 @@ const App = ({
   //     'collections',
   //     collectionsArray.map(({ title, items }) => ({
   //       title,
-  //       items
+  //       items,
   //     }))
   //   );
-  // }, [collectionsArray]);
+  // }, []);
 
   // useEffect(() => {
   //   addCollectionAndDocuments(
   //     'stock',
-  //     stockArray.map(({ id, name, imageUrl, price, stock }) => ({
-  //       id,
-  //       name,
-  //       imageUrl,
-  //       price,
-  //       stock
-  //     }))
+  //     stockArray.map(
+  //       ({ id, name, imageUrl, price, stock, collection, tags }) => ({
+  //         id,
+  //         name,
+  //         imageUrl,
+  //         price,
+  //         stock,
+  //         collection,
+  //         tags,
+  //       })
+  //     )
   //   );
-  // }, [stockArray]);
+  // }, []);
 
   return (
     <div>
@@ -134,8 +138,8 @@ const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
   cartItemsCount: selectCartItemsCount,
   wishItemsCount: selectWishItemsCount,
-  // stockArray: selectStockLoadingForPreview
-  // collectionsArray: selectCollectionsForPreview
+  // stockArray: selectStockLoadingForPreview,
+  // collectionsArray: selectCollectionsForPreview,
 });
 
 // const mapDispatchToProps = dispatch => ({
