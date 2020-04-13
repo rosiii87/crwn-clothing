@@ -7,6 +7,7 @@ import { createStructuredSelector } from 'reselect';
 import { GlobalStyle } from './global.styles';
 
 import Header from './components/header/header.component';
+import NewsletterSub from './components/newsletter/newsletter.component';
 import Spinner from './components/spinner/spinner.component';
 import ErrorBoundary from './components/error-boundary/error-boundary.component';
 
@@ -130,6 +131,13 @@ const App = ({
           </Suspense>
         </ErrorBoundary>
       </Switch>
+      {currentUser ? (
+        currentUser.news === true ? null : (
+          <NewsletterSub />
+        )
+      ) : (
+        <NewsletterSub />
+      )}
     </div>
   );
 };

@@ -1,34 +1,41 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
-import FormInput from '../form-input/form-input.component';
+// import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
 
 import {
   googleSignInStart,
-  emailSignInStart
+  emailSignInStart,
 } from '../../redux/user/user.actions';
 
 import {
   SignInContainer,
   SignInTitle,
-  ButtonsBarContainer
+  ButtonsBarContainer,
 } from './sign-in.styles';
+
+import {
+  FormTextFullLabel,
+  FormTextFullText,
+  FormTextFullInput,
+  FormMain,
+} from '../newsletter/forms.styles';
 
 const SignIn = ({ emailSignInStart, googleSignInStart }) => {
   const [userCredentials, setCredemtials] = useState({
     email: '',
-    password: ''
+    password: '',
   });
 
   const { email, password } = userCredentials;
-  const handleSubmit = async event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     emailSignInStart(email, password);
   };
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     const { value, name } = event.target;
 
     setCredemtials({ ...userCredentials, [name]: value });
@@ -36,45 +43,55 @@ const SignIn = ({ emailSignInStart, googleSignInStart }) => {
 
   return (
     <SignInContainer>
-      <SignInTitle>I already have an account</SignInTitle>
-      <span>Sign in with your email and password</span>
+      <SignInTitle>Přihlásit se k účtu</SignInTitle>
+      <span>Přihlášení k existujícímu účtu pomocí emailu a hesla</span>
 
-      <form onSubmit={handleSubmit}>
-        <FormInput
-          name="email"
-          type="email"
-          handleChange={handleChange}
-          value={email}
-          label="email"
-          required
-        />
-        <FormInput
-          name="password"
-          type="password"
-          value={password}
-          handleChange={handleChange}
-          label="password"
-          required
-        />
+      <FormMain onSubmit={handleSubmit}>
+        <FormTextFullLabel>
+          <FormTextFullInput
+            name="email"
+            type="email"
+            onChange={handleChange}
+            value={email}
+            label="email"
+            placeholder=" "
+            required
+          />
+          <FormTextFullText>Email:</FormTextFullText>
+        </FormTextFullLabel>
+        <FormTextFullLabel>
+          <FormTextFullInput
+            name="password"
+            type="password"
+            value={password}
+            onChange={handleChange}
+            label="password"
+            placeholder=" "
+            required
+          />
+          <FormTextFullText>Heslo:</FormTextFullText>
+        </FormTextFullLabel>
         <ButtonsBarContainer>
-          <CustomButton type="submit"> Sign in </CustomButton>
+          <CustomButton type="submit">Přihlásit</CustomButton>
+        </ButtonsBarContainer>
+        <ButtonsBarContainer>
           <CustomButton
             type="button" // not to trigger submit
             onClick={googleSignInStart}
             isGoogleSignIn
           >
-            Sign in with Google
+            Přihlásit s Googlem
           </CustomButton>
         </ButtonsBarContainer>
-      </form>
+      </FormMain>
     </SignInContainer>
   );
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   googleSignInStart: () => dispatch(googleSignInStart()),
   emailSignInStart: (email, password) =>
-    dispatch(emailSignInStart({ email, password }))
+    dispatch(emailSignInStart({ email, password })),
 });
 
 export default connect(null, mapDispatchToProps)(SignIn);

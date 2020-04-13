@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { maxMedia } from '../styles/mixins';
 
 import { ReactComponent as ShoppingIconSVG } from '../../assets/heart.svg';
 
@@ -11,6 +12,10 @@ export const WishContainer = styled(Link)`
   align-items: center;
   justify-content: center;
   cursor: pointer;
+
+  ${maxMedia.sm`
+  display: none;
+  `}
 `;
 
 export const WishIconStyle = styled(ShoppingIconSVG)`

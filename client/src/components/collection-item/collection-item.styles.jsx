@@ -1,77 +1,76 @@
 import styled from 'styled-components';
 import CustomButton from '../custom-button/custom-button.component';
 import { Link } from 'react-router-dom';
+import { maxMedia } from '../styles/mixins';
 
 export const CollectionItemContainer = styled.div`
-  width: 22vw;
   display: flex;
   flex-direction: column;
-  height: 350px;
+  height: 33rem;
   align-items: center;
   position: relative;
-  padding: 0 10px;
+  padding: 2rem 1rem;
 
   &:hover {
     .image {
-      opacity: 0.8;
+      opacity: 0.9;
     }
 
     button {
-      opacity: 0.85;
+      opacity: 0.9;
       display: flex;
     }
   }
 
-  @media screen and (max-width: 800px) {
-    width: 40vw;
-    padding: unset;
+  ${maxMedia.sm`
+  min-height: 22.4rem;
+  height: 23.8rem;
 
-    &:hover {
-      .image {
-        opacity: unset;
-      }
 
-      button {
-        opacity: unset;
-      }
+  &:hover {
+    .image {
+      opacity: unset;
+    }
+
+    button {
+      opacity: 0.9;
     }
   }
+  `}
 `;
 
 export const AddWishButton = styled(CustomButton)`
   width: 80%;
-  opacity: 0.7;
+  opacity: 0.9;
   position: absolute;
-  top: 200px;
+  top: 0;
   display: none;
 
-  @media screen and (max-width: 800px) {
+  ${maxMedia.sm`
     display: block;
     opacity: 0.9;
     min-width: unset;
-    padding: 0 10px;
-  }
+  `}
 `;
 
 export const AddButton = styled(CustomButton)`
   width: 80%;
-  opacity: 0.7;
+  opacity: 0.9;
   position: absolute;
-  top: 255px;
+  bottom: 0;
   display: none;
 
-  @media screen and (max-width: 800px) {
-    display: block;
-    opacity: 0.9;
-    min-width: unset;
-    padding: 0 10px;
+  ${maxMedia.sm`
+  display: block;
+  opacity: 0.9;
+  min-width: unset;
   }
+  `}
 `;
 
 export const BackgroundLink = styled(Link)`
   width: 100%;
-  height: 95%;
-  margin-bottom: 5px;
+  height: 100%;
 `;
 
 export const BackgroundImage = styled.div`
@@ -83,20 +82,21 @@ export const BackgroundImage = styled.div`
   background-image: ${({ imageUrl }) => `url(${imageUrl})`};
 `;
 
-export const CollectionFooterContainer = styled.div`
-  width: 100%;
-  height: 5%;
-  display: flex;
-  justify-content: space-between;
-  font-size: 18px;
-`;
+// NOT USING below
+// export const CollectionFooterContainer = styled.div`
+//   width: 100%;
+//   height: 5%;
+//   display: flex;
+//   justify-content: space-between;
+//   font-size: 18px;
+// `;
 
-export const NameContainer = styled.span`
-  width: 80%;
-  margin-bottom: 15px;
-`;
+// export const NameContainer = styled.span`
+//   width: 80%;
+//   margin-bottom: 15px;
+// `;
 
-export const PriceContainer = styled.span`
-  width: 20%;
-  text-align: right;
-`;
+// export const PriceContainer = styled.span`
+//   width: 20%;
+//   text-align: right;
+// `;

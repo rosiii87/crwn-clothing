@@ -1,11 +1,18 @@
 import styled from 'styled-components';
 
 export const SignUpContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 380px;
+margin: 3rem auto;
+width: 100%;
+max-width: 59rem
+display: flex;
+flex-direction: column;
+justify-content: center;
+text-align: center;
 `;
 
 export const SignUpTitle = styled.h2`
-  margin: 10px 0;
+  text-transform: uppercase;
+  + span {
+    margin-bottom: 2.5rem;
+  }
 `;

@@ -1,16 +1,22 @@
 import styled from 'styled-components';
 
 export const SignInContainer = styled.div`
-  width: 380px;
+  margin: 3rem auto;
+  width: 100%;
+  max-width: 59rem
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  text-align: center;
 `;
 
 export const SignInTitle = styled.h2`
-  margin: 10px 0;
+  text-transform: uppercase;
+  + span {
+    margin-bottom: 2.5rem;
+  }
 `;
 
 export const ButtonsBarContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
+  margin: 0 0 2.5rem 0;
 `;

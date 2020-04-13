@@ -8,17 +8,14 @@ import { addWishItem } from '../../redux/wish/wish.actions';
 
 import {
   CollectionItemContainer,
-  CollectionFooterContainer,
   AddButton,
   AddWishButton,
   BackgroundImage,
-  NameContainer,
-  PriceContainer,
   BackgroundLink,
 } from './collection-item.styles';
 
 const CollectionItem = ({ routeName, item, addItem, addWishItem }) => {
-  const { id, name, price, stock, imageUrl } = item;
+  const { id, name, imageUrl } = item;
   const slug = slugify(name).toLowerCase();
 
   return (
@@ -27,18 +24,18 @@ const CollectionItem = ({ routeName, item, addItem, addWishItem }) => {
         <BackgroundImage className="image" imageUrl={imageUrl} />
       </BackgroundLink>
 
-      <CollectionFooterContainer>
+      {/* <CollectionFooterContainer>
         <NameContainer>
           {name} | {price} Kč{' '}
         </NameContainer>
         <PriceContainer>{stock} ks</PriceContainer>
-      </CollectionFooterContainer>
+      </CollectionFooterContainer> */}
       <AddWishButton onClick={() => addWishItem(item)} inverted>
-        Add to wishList
+        wishList
       </AddWishButton>
       {item.stock > 0 ? (
         <AddButton onClick={() => addItem(item)} inverted>
-          Add to cart
+          Koupit
         </AddButton>
       ) : (
         <AddButton onClick={() => alert('bohužel vyprodáno')} inverted>

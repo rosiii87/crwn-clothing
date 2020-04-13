@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
-import FormInput from '../form-input/form-input.component';
+// import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
+
+import {
+  FormTextFullLabel,
+  FormTextFullText,
+  FormTextFullInput,
+  FormMain,
+} from '../newsletter/forms.styles';
 
 import { signUpStart } from '../../redux/user/user.actions';
 
@@ -13,11 +20,11 @@ const SignUp = ({ signUpStart }) => {
     displayName: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
   });
 
   const { displayName, email, password, confirmPassword } = userCredentials;
-  const handleSubmit = async event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (password !== confirmPassword) {
@@ -28,7 +35,7 @@ const SignUp = ({ signUpStart }) => {
     signUpStart({ displayName, email, password });
   };
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     const { name, value } = event.target;
 
     setUserCredentials({ ...userCredentials, [name]: value });
@@ -36,49 +43,65 @@ const SignUp = ({ signUpStart }) => {
 
   return (
     <SignUpContainer>
-      <SignUpTitle>I do not have a account</SignUpTitle>
-      <span>Sign up with your email and password</span>
-      <form className="sign-up-form" onSubmit={handleSubmit}>
-        <FormInput
-          type="text"
-          name="displayName"
-          value={displayName}
-          onChange={handleChange}
-          label="Display Name"
-          required
-        />
-        <FormInput
-          type="email"
-          name="email"
-          value={email}
-          onChange={handleChange}
-          label="Email"
-          required
-        />
-        <FormInput
-          type="password"
-          name="password"
-          value={password}
-          onChange={handleChange}
-          label="Password"
-          required
-        />
-        <FormInput
-          type="password"
-          name="confirmPassword"
-          value={confirmPassword}
-          onChange={handleChange}
-          label="Confirm Password"
-          required
-        />
-        <CustomButton type="submit">SIGN UP</CustomButton>
-      </form>
+      <SignUpTitle>Zaregistrovat se</SignUpTitle>
+      <span>Založení nového účtu pomocí emailu a hesla:</span>
+      <FormMain className="sign-up-form" onSubmit={handleSubmit}>
+        <FormTextFullLabel>
+          <FormTextFullInput
+            type="text"
+            name="displayName"
+            placeholder=" "
+            value={displayName}
+            onChange={handleChange}
+            label="Display Name"
+            required
+          />
+          <FormTextFullText>Jméno a příjmení</FormTextFullText>
+        </FormTextFullLabel>
+        <FormTextFullLabel>
+          <FormTextFullInput
+            type="email"
+            name="email"
+            placeholder=" "
+            value={email}
+            onChange={handleChange}
+            label="Email"
+            required
+          />
+          <FormTextFullText>Email</FormTextFullText>
+        </FormTextFullLabel>
+        <FormTextFullLabel>
+          <FormTextFullInput
+            type="password"
+            name="password"
+            placeholder=" "
+            value={password}
+            onChange={handleChange}
+            label="Password"
+            required
+          />
+          <FormTextFullText>Heslo</FormTextFullText>
+        </FormTextFullLabel>
+        <FormTextFullLabel>
+          <FormTextFullInput
+            type="password"
+            name="confirmPassword"
+            placeholder=" "
+            value={confirmPassword}
+            onChange={handleChange}
+            label="Confirm Password"
+            required
+          />
+          <FormTextFullText>Potvrzení hesla</FormTextFullText>
+        </FormTextFullLabel>
+        <CustomButton type="submit">REGISTROVAT SE</CustomButton>
+      </FormMain>
     </SignUpContainer>
   );
 };
 
-const mapDispatchToProps = dispatch => ({
-  signUpStart: userCredentials => dispatch(signUpStart(userCredentials))
+const mapDispatchToProps = (dispatch) => ({
+  signUpStart: (userCredentials) => dispatch(signUpStart(userCredentials)),
 });
 
 export default connect(null, mapDispatchToProps)(SignUp);

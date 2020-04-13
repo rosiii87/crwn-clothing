@@ -8,30 +8,44 @@ import { Helmet } from 'react-helmet';
 // import StripeCheckoutButton from '../../components/stripe-button/stripe-button.component';
 import CheckoutItem from '../../components/checkout-item/checkout-item.component';
 
-import FormInput from '../../components/form-input/form-input.component';
 import CustomButton from '../../components/custom-button/custom-button.component';
 
 import {
   SignUpContainer,
-  SignUpTitle
+  SignUpTitle,
 } from '../../components/sign-up/sign-up.styles';
+
+import {
+  FormTextFullLabel,
+  FormTextFullText,
+  FormTextFullInput,
+  FormMain,
+  FormRadioHalf,
+  FormRadioContainer,
+  FormRadioLabel,
+  FormCustomRadio,
+  FormCheckLabel,
+  FormCheckHalf,
+  FormCustomCheck,
+} from '../../components/newsletter/forms.styles';
 
 import {
   clearCart,
   clearCartInFirebase,
-  createOrderInFirebase
+  createOrderInFirebase,
 } from '../../redux/cart/cart.actions';
 
 import {
   selectCartItems,
-  selectCartTotal
+  selectCartTotal,
 } from '../../redux/cart/cart.selectors';
 
 import {
   CheckoutPageContainer,
   CheckoutHeaderContainer,
   HeaderBlockContainer,
-  TotalContainer
+  TotalContainer,
+  InformativeText,
   // WarningContainer
 } from './checkout.styles';
 
@@ -40,7 +54,7 @@ import {
   signUpStart,
   emailSignInStart,
   googleSignInStart,
-  editUser
+  editUser,
 } from '../../redux/user/user.actions';
 
 const CheckoutPage = ({
@@ -53,24 +67,24 @@ const CheckoutPage = ({
   signUpStart,
   emailSignInStart,
   googleSignInStart,
-  editUser
+  editUser,
 }) => {
   // HANDLERS FOR USER PROFILE LOGIN / REGISTER OR NOTHING
   const [userCredentials, setUserCredentials] = useState({
     displayName: user ? user.displayName : '',
     email: user ? user.email : '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
   });
 
   // USER HANDLERS
   const { displayName, email, password, confirmPassword } = userCredentials;
-  const handleSubmit = async event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     signUpStart({ displayName, email, password });
   };
 
-  const handleLogin = async event => {
+  const handleLogin = async (event) => {
     setTimeout(() => {
       window.location.reload();
       return false;
@@ -79,7 +93,7 @@ const CheckoutPage = ({
     emailSignInStart(email, password);
   };
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     event.preventDefault();
     const { name, value } = event.target;
 
@@ -94,11 +108,11 @@ const CheckoutPage = ({
     telephone: user ? user.telephone : '',
     doprava: 'gls',
     platba: 'dobirka',
-    message: ''
+    message: '',
   });
 
   // addInfo handlers
-  const handleInfoChange = event => {
+  const handleInfoChange = (event) => {
     const { name, value } = event.target;
 
     setAdditionalInfo({ ...additionalInfo, [name]: value });
@@ -107,11 +121,11 @@ const CheckoutPage = ({
   // checkoboxes hook
   const [legalCheck, setLegalCheck] = useState({
     legal: false,
-    news: user ? user.news : false
+    news: user ? user.news : false,
   });
 
   // checkboxes handlers
-  const handleChecks = event => {
+  const handleChecks = (event) => {
     const { name } = event.target;
     const value = event.target.checked;
 
@@ -139,7 +153,7 @@ const CheckoutPage = ({
   // editUser have to come first -> then creating the order in DB
   const { city, street, telephone, doprava, platba, message } = addRef.current;
   const { legal, news } = checkRef.current;
-  const handlePay = async event => {
+  const handlePay = async (event) => {
     setTimeout(() => {
       createOrderInFirebase();
       setThankYouPage(true);
@@ -156,7 +170,7 @@ const CheckoutPage = ({
       platba,
       legal,
       news,
-      message
+      message,
     });
   };
 
@@ -186,58 +200,55 @@ const CheckoutPage = ({
           <span>Remove</span>
         </HeaderBlockContainer>
       </CheckoutHeaderContainer>
-      {cartItems.map(cartItem => (
+      {cartItems.map((cartItem) => (
         <CheckoutItem key={cartItem.id} cartItem={cartItem} />
       ))}
       <TotalContainer>TOTAL: ${total}</TotalContainer>
 
       <SignUpContainer>
-        <SignUpTitle>Finish your order</SignUpTitle>
-        <span>Contact info</span>
-        <form className="sign-up-form" onSubmit={handlePay}>
-          <FormInput
-            type="text"
-            name="displayName"
-            value={displayName}
-            onChange={handleChange}
-            label={user ? "Damn that's cool name" : 'Full Name'}
-            readOnly={user ? true : false}
-          />
-          <FormInput
-            type="email"
-            name="email"
-            value={email}
-            onChange={handleChange}
-            label={user ? 'Even better' : 'email'}
-            readOnly={user ? true : false}
-          />
-          {!user ? (
-            <FormInput
-              type="password"
-              name="password"
-              value={password}
+        <SignUpTitle>DOKONČIT OBJEDNÁVKU</SignUpTitle>
+        <FormMain className="sign-up-form" onSubmit={handlePay}>
+          <InformativeText>Kontaktní údaje</InformativeText>
+          <FormTextFullLabel>
+            <FormTextFullInput
+              type="text"
+              name="displayName"
+              placeholder=" "
+              value={displayName}
               onChange={handleChange}
-              label="Password"
-              required
+              label={user ? 'Hustý jméno' : 'Jméno a příjmení'}
             />
+            <FormTextFullText>Jméno a příjmení *</FormTextFullText>
+          </FormTextFullLabel>
+          <FormTextFullLabel>
+            <FormTextFullInput
+              type="email"
+              name="email"
+              placeholder=" "
+              value={email}
+              onChange={handleChange}
+              label={user ? 'Ještě hustější' : 'email'}
+              readOnly={user ? true : false}
+            />
+            <FormTextFullText>Email *</FormTextFullText>
+          </FormTextFullLabel>
+          {!user ? (
+            <FormTextFullLabel>
+              <FormTextFullInput
+                type="password"
+                name="password"
+                placeholder=" "
+                value={password}
+                onChange={handleChange}
+                label="Heslo"
+                required
+              />
+              <FormTextFullText>Heslo *</FormTextFullText>
+            </FormTextFullLabel>
           ) : null}
           {!user ? (
             <CustomButton type="button" onClick={handleLogin}>
-              Login
-            </CustomButton>
-          ) : null}
-          {!user ? (
-            <FormInput
-              type="password"
-              name="confirmPassword"
-              value={confirmPassword}
-              onChange={handleChange}
-              label="Confirm Password"
-            />
-          ) : null}
-          {!user ? (
-            <CustomButton type="button" onClick={handleSubmit}>
-              REGISTROVAT
+              Přihlásit
             </CustomButton>
           ) : null}
           {!user ? (
@@ -246,106 +257,183 @@ const CheckoutPage = ({
               onClick={googleSignInStart}
               isGoogleSignIn
             >
-              Sign in with Google
+              Přihlásit s Googlem
             </CustomButton>
           ) : null}
-          <FormInput
-            type="city"
-            name="city"
-            onChange={handleInfoChange}
-            value={city}
-            label="Město"
-            required
-          />
-          <FormInput
-            type="street"
-            name="street"
-            onChange={handleInfoChange}
-            value={street}
-            label="Ulice a Č.P."
-            required
-          />
-          <FormInput
-            type="tel"
-            name="telephone"
-            onChange={handleInfoChange}
-            value={telephone}
-            label="Tel. číslo"
-            required
-          />
-          Dorpava
-          <FormInput
-            type="radio"
-            name="doprava"
-            onChange={handleInfoChange}
-            value="gls"
-            label="GLS"
-            required
-          />
-          <FormInput
-            type="radio"
-            name="doprava"
-            onChange={handleInfoChange}
-            value="zásilkovna"
-            label="Zásilkovna"
-          />
-          Platba
-          <FormInput
-            type="radio"
-            name="platba"
-            onChange={handleInfoChange}
-            value="dobírka"
-            label="Dobírka"
-            required
-          />
-          <FormInput
-            type="radio"
-            name="platba"
-            onChange={handleInfoChange}
-            value="Bankovní převod"
-            label="Bankovní převod"
-          />
-          <FormInput
-            type="text"
-            name="message"
-            value={message}
-            onChange={handleInfoChange}
-            label="Přidat vzkaz k objednávce"
-          />
-          GDPR shit
-          <FormInput
-            type="checkbox"
-            name="legal"
-            onChange={handleChecks}
-            label="Souhlasím se vším, shut up and take my money"
-            required
-          />
+          {!user ? (
+            <InformativeText>Pokud nakupujete poprvé</InformativeText>
+          ) : null}
+          {!user ? (
+            <FormTextFullLabel>
+              <FormTextFullInput
+                type="password"
+                name="confirmPassword"
+                placeholder=" "
+                value={confirmPassword}
+                onChange={handleChange}
+                label="Confirm Password"
+              />
+              <FormTextFullText>Potvrzení hesla *</FormTextFullText>
+            </FormTextFullLabel>
+          ) : null}
+          {!user ? (
+            <CustomButton type="button" onClick={handleSubmit}>
+              REGISTROVAT
+            </CustomButton>
+          ) : null}
+          <FormTextFullLabel>
+            <FormTextFullInput
+              type="city"
+              name="city"
+              placeholder=" "
+              onChange={handleInfoChange}
+              value={city}
+              label="Město"
+              required
+            />
+            <FormTextFullText>Město *</FormTextFullText>
+          </FormTextFullLabel>
+          <FormTextFullLabel>
+            <FormTextFullInput
+              type="street"
+              name="street"
+              placeholder=" "
+              onChange={handleInfoChange}
+              value={street}
+              label="Ulice a Č.P."
+              required
+            />
+            <FormTextFullText>Ulice a Č.P. *</FormTextFullText>
+          </FormTextFullLabel>
+          <FormTextFullLabel>
+            <FormTextFullInput
+              type="tel"
+              name="telephone"
+              placeholder=" "
+              onChange={handleInfoChange}
+              value={telephone}
+              label="Tel. číslo"
+              required
+            />
+            <FormTextFullText>Tel. číslo *</FormTextFullText>
+          </FormTextFullLabel>
+          <InformativeText>Doprava *</InformativeText>
+          <FormRadioContainer>
+            <FormRadioLabel>
+              <FormRadioHalf
+                type="radio"
+                name="doprava"
+                onChange={handleInfoChange}
+                value="gls"
+                label="GLS"
+                required
+              />{' '}
+              GLS
+              <FormCustomRadio />
+            </FormRadioLabel>
+            <FormRadioLabel>
+              <FormRadioHalf
+                type="radio"
+                name="doprava"
+                onChange={handleInfoChange}
+                value="zásilkovna"
+                label="Zásilkovna"
+              />{' '}
+              Zásilkovna
+              <FormCustomRadio />
+            </FormRadioLabel>
+          </FormRadioContainer>
+          <InformativeText>Platba *</InformativeText>
+          <FormRadioContainer>
+            <FormRadioLabel>
+              <FormRadioHalf
+                type="radio"
+                name="platba"
+                onChange={handleInfoChange}
+                value="dobírka"
+                label="Dobírka"
+                required
+              />{' '}
+              Dobírka
+              <FormCustomRadio />
+            </FormRadioLabel>
+            <FormRadioLabel>
+              <FormRadioHalf
+                type="radio"
+                name="platba"
+                onChange={handleInfoChange}
+                value="Bankovní převod"
+                label="Bankovní převod"
+              />{' '}
+              Bankovní převod
+              <FormCustomRadio />
+            </FormRadioLabel>
+          </FormRadioContainer>
+          <FormTextFullLabel>
+            <FormTextFullInput
+              style={{ height: '10rem' }}
+              type="text"
+              name="message"
+              placeholder=" "
+              value={message}
+              onChange={handleInfoChange}
+              label="Přidat vzkaz k objednávce"
+            />
+            <FormTextFullText>Přidat vzkaz k objednávce</FormTextFullText>
+          </FormTextFullLabel>
+          <InformativeText>Obchodní podmínky</InformativeText>
+          <FormRadioContainer>
+            <FormCheckLabel style={{ width: '100%' }}>
+              <FormCheckHalf
+                type="checkbox"
+                name="legal"
+                onChange={handleChecks}
+                label="Souhlasím se vším, shut up and take my money"
+                required
+              />{' '}
+              Souhlasím s obchodními podmínkami.*
+              <FormCustomCheck />
+            </FormCheckLabel>
+          </FormRadioContainer>
           {user ? (
             !user.news ? (
-              <FormInput
-                type="checkbox"
-                name="news"
-                onChange={handleChecks}
-                label="Nechci nezasílát nenewslettery pokud nedám check!"
-              />
+              <FormRadioContainer>
+                <FormCheckLabel style={{ width: '100%' }}>
+                  <FormCheckHalf
+                    type="checkbox"
+                    name="news"
+                    onChange={handleChecks}
+                    label="Přeji si odebírat Newsletter s novinkami a slevami"
+                  />{' '}
+                  Přeji si odebírat Newsletter s novinkami a slevami.
+                  <FormCustomCheck />
+                </FormCheckLabel>
+              </FormRadioContainer>
             ) : null
           ) : (
-            <FormInput
-              type="checkbox"
-              name="news"
-              onChange={handleChecks}
-              label="Nechci nezasílát nenewslettery pokud nedám check!"
-            />
+            <FormRadioContainer>
+              <FormCheckLabel style={{ width: '100%' }}>
+                <FormCheckHalf
+                  type="checkbox"
+                  name="news"
+                  onChange={handleChecks}
+                  label="Přeji si odebírat Newsletter s novinkami a slevami"
+                />{' '}
+                Přeji si odebírat Newsletter s novinkami a slevami.
+                <FormCustomCheck />
+              </FormCheckLabel>
+            </FormRadioContainer>
           )}
-          <TotalContainer>TOTAL: ${total}</TotalContainer>
           {isLoading ? (
             <CustomButton>ZPRACOVÁVÁM...</CustomButton>
           ) : (
-            <CustomButton type="submit">ODESLAT OBJEDNÁVKU</CustomButton>
+            <CustomButton type="submit">
+              ODESLAT OBJEDNÁVKU ZA {total} Kč
+            </CustomButton>
           )}
           {thankYouPage ? <Redirect to="/thankyou" /> : null}
           {/* {thankYouPage === false && total === 0 ? <Redirect to="/" /> : null} */}
-        </form>
+        </FormMain>
       </SignUpContainer>
 
       {/* <WarningContainer>
@@ -362,18 +450,18 @@ const CheckoutPage = ({
 const mapStateToProps = createStructuredSelector({
   cartItems: selectCartItems,
   total: selectCartTotal,
-  user: selectCurrentUser
+  user: selectCurrentUser,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   clearCart: () => dispatch(clearCart()),
   clearCartInFirebase: () => dispatch(clearCartInFirebase()),
   createOrderInFirebase: () => dispatch(createOrderInFirebase()),
-  signUpStart: userCredentials => dispatch(signUpStart(userCredentials)),
+  signUpStart: (userCredentials) => dispatch(signUpStart(userCredentials)),
   googleSignInStart: () => dispatch(googleSignInStart()),
   emailSignInStart: (email, password) =>
     dispatch(emailSignInStart({ email, password })),
-  editUser: additionalData => dispatch(editUser({ additionalData }))
+  editUser: (additionalData) => dispatch(editUser({ additionalData })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CheckoutPage);

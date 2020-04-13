@@ -1,44 +1,111 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { minMedia, maxMedia } from '../styles/mixins';
+import { colors } from '../styles/variables';
 
 export const HeaderContainer = styled.div`
-  height: 70px;
   width: 100%;
+  height: 8rem;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 25px;
-
-  @media screen and (max-width: 800px) {
-    height: 60px;
-    padding: 10px;
-    margin-bottom: 20px;
-  }
+  align-items: center;
+  ${minMedia.sm`
+  height: 10rem;
+  `};
 `;
 
 export const LogoContainer = styled(Link)`
-  height: 100%;
-  width: 70px;
-  padding: 25px;
+  height: 8rem;
+  padding 1rem 0rem 1rem 1rem;
 
-  @media screen and (max-width: 800px) {
-    width: 50px;
-    padding: 0px;
+  display: flex;
+  ${minMedia.sm`
+  height: 10rem;
+  padding 2rem;
+
+  `}
+
+  ${maxMedia.sm`
+  & > span {
+    display: none;
   }
+
+  `}
 `;
 
-export const OptionsContainer = styled.div`
-  width: 50%;
-  height: 100%;
+export const MidCotainer = styled.div`
+  ${minMedia.sm`
+`}
+`;
+
+export const SideMenuContainer = styled.div`
+  height: 8rem;
+  padding 1rem;
+
+  display: flex;
+
+
+  ${minMedia.sm`
+  height: 10rem;
+  padding 2rem;
+
+  `}
+`;
+
+export const WishMidContainer = styled(Link)`
+  width: 4.5rem;
+  height: 4.5rem;
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
+  cursor: pointer;
 
-  @media screen and (max-width: 800px) {
-    width: 80%;
+  ${minMedia.sm`
+   display: none;
+  `}
+`;
+
+export const BrandName = styled.h1`
+  text-transform: unset;
+  margin-left: 2rem;
+  font-size: 6rem;
+  :hover {
+    color: #000000;
   }
+
+  ${maxMedia.sm`
+  display: none;
+  `}
+`;
+
+export const StickFake = styled.span`
+  background-color: transparent;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  text-align: center;
+  ${minMedia.sm`
+`}
 `;
 
 export const OptionLink = styled(Link)`
-  padding: 10px 15px;
   cursor: pointer;
+  font-weight: 500;
+
+  :hover {
+    color: ${colors.primary};
+  }
+  ${minMedia.sm` 
+  `}
+`;
+
+export const ButtomLine = styled.div`
+  width: 100%;
+  height: 2rem;
+  margin-bottom: 2rem;
+  background-color: ${colors.greyDark};
+  ${minMedia.sm`
+height: 3rem;
+`}
 `;

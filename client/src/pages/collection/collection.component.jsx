@@ -10,6 +10,9 @@ import {
   CollectionPageContainer,
   CollectionTitle,
   CollectionItemsContainer,
+  SearchInput,
+  InputText,
+  SearchLabel,
 } from './collection.styles';
 
 const CollectionPage = ({ collection }) => {
@@ -19,19 +22,19 @@ const CollectionPage = ({ collection }) => {
     setSearchTerm(event.target.value);
   };
 
-  const sortPriceAsc = () => {
-    const sorted = [...searchResult].sort((a, b) => {
-      return a.price - b.price;
-    });
-    setSearchResult(sorted);
-  };
+  // const sortPriceAsc = () => {
+  //   const sorted = [...searchResult].sort((a, b) => {
+  //     return a.price - b.price;
+  //   });
+  //   setSearchResult(sorted);
+  // };
 
-  const sortPriceDsc = () => {
-    const sorted = [...searchResult].sort((a, b) => {
-      return b.price - a.price;
-    });
-    setSearchResult(sorted);
-  };
+  // const sortPriceDsc = () => {
+  //   const sorted = [...searchResult].sort((a, b) => {
+  //     return b.price - a.price;
+  //   });
+  //   setSearchResult(sorted);
+  // };
 
   const { title, routeName, items } = collection;
 
@@ -50,15 +53,18 @@ const CollectionPage = ({ collection }) => {
         <meta name="description" content={title} />
       </Helmet>
       <CollectionTitle>{title}</CollectionTitle>
-      <button onClick={sortPriceAsc}>Od nejlevnějšího</button>
-      <button onClick={sortPriceDsc}>Od nejdražšího</button>
-      <input
-        style={{ marginBottom: '20px' }}
-        placeholder="Hledat"
-        value={searchTerm}
-        type="text"
-        onChange={handleChange}
-      />
+      {/* <button onClick={sortPriceAsc}>Od nejlevnějšího</button>
+      <button onClick={sortPriceDsc}>Od nejdražšího</button> */}
+      <SearchLabel>
+        <SearchInput
+          style={{ marginBottom: '20px' }}
+          placeholder=" "
+          value={searchTerm}
+          type="text"
+          onChange={handleChange}
+        ></SearchInput>
+        <InputText>Hledat:</InputText>
+      </SearchLabel>
       <CollectionItemsContainer>
         {searchResult[0] ? (
           searchResult.map((item) => (

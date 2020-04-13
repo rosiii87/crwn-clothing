@@ -10,7 +10,7 @@ export const CheckoutPageContainer = styled.div`
 
   button {
     margin-left: auto;
-    margin-top: 50px;
+    margin: 0 0 3.5rem 0;
   }
 `;
 
@@ -42,4 +42,8 @@ export const WarningContainer = styled.div`
   margin-top: 40px;
   font-size: 24px;
   color: red;
+`;
+
+export const InformativeText = styled.span`
+  margin-bottom: 2.5rem;
 `;

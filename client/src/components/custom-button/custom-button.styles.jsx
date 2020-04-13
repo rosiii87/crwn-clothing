@@ -1,40 +1,72 @@
 import styled, { css } from 'styled-components';
+import { maxMedia } from '../styles/mixins';
+import { colors } from '../styles/variables';
 
 const buttonStyles = css`
-  background-color: black;
+  background-image: linear-gradient(
+    120deg,
+    ${colors.primary} 0%,
+    ${colors.primary} 50%,
+    #000000 50%
+  );
+
+  background-size: 250%;
+  transition: all 0.6s;
+
   color: white;
   border: none;
 
   &:hover {
-    background-color: white;
-    color: black;
-    border: 1px solid black;
-  }
-`;
-
-const invertedButtonStyles = css`
-  background-color: white;
-  color: black;
-  border: 1px solid black;
-
-  &:hover {
-    background-color: black;
+    background-position: 100%;
+    background-color: #000000;
     color: white;
     border: none;
   }
 `;
 
-const googleSignInStyles = css`
-  background-color: #4285f4;
+const invertedButtonStyles = css`
+  background-image: linear-gradient(
+    120deg,
+    ${colors.greyDark} 0%,
+    ${colors.greyDark} 50%,
+    ${colors.primary} 50%
+  );
+
+  background-size: 250%;
+  transition: all 0.6s;
+
   color: white;
+  border: none;
 
   &:hover {
+    background-position: 100%;
+    background-color: ${colors.primary};
+    color: white;
+  }
+`;
+
+const googleSignInStyles = css`
+  background-image: linear-gradient(
+    120deg,
+    #4285f4 0%,
+    #4285f4 50%,
+    #357ae8 50%
+  );
+
+  background-size: 250%;
+  transition: all 0.6s;
+
+  color: white;
+  border: none;
+
+  &:hover {
+    background-position: 100%;
     background-color: #357ae8;
     border: none;
   }
 `;
 
-const getButtonStyles = props => {
+const getButtonStyles = (props) => {
   if (props.isGoogleSignIn) {
     return googleSignInStyles;
   }
@@ -43,24 +75,33 @@ const getButtonStyles = props => {
 };
 
 export const CustomButtonContainer = styled.button`
-  min-width: 165px;
-  width: auto;
-  height: 50px;
-  letter-spacing: 0.5px;
-  line-height: 50px;
-  padding: 0 35px 0 35px;
-  font-size: 15px;
+  min-width: 16.5rem;
+  width: 100%;
+  height: 5rem;
+  padding: 0 3.5rem 0 3.5rem;
   text-transform: uppercase;
-  font-family: 'Open Sans Condensed';
-  font-weight: bolder;
+  font-weight: 500;
   cursor: pointer;
   display: flex;
   justify-content: center;
 
-  @media screen and (max-width: 1400px) {
-    min-width: unset;
-    padding: 0 10px;
-  }
+  ${maxMedia.xl`
+  `}
+
+  ${maxMedia.sm`
+  `}
 
   ${getButtonStyles}
 `;
+
+// const invertedButtonStyles = css`
+//   background-color: ${colors.greyDark};
+//   color: white;
+//   border: 1px solid ${colors.greyDark}
+
+//   &:hover {
+//     background-color:  ${colors.primary};
+//     color: white;
+//     border: none;
+//   }
+// `;
