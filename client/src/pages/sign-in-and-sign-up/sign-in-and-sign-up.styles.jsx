@@ -3,7 +3,7 @@ import { maxMedia } from '../../components/styles/mixins';
 
 export const SignInAndSignUpContainer = styled.div`
   margin: auto;
-  max-width: 1180px;
+  max-width: 118rem;
 
   display: flex;
   flex-direction: column;

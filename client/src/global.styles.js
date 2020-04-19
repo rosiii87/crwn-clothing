@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-import { minMedia } from './components/styles/mixins';
+import { maxMedia, minMedia } from './components/styles/mixins';
 import { colors } from './components/styles/variables';
 
 export const GlobalStyle = createGlobalStyle`
@@ -17,9 +17,19 @@ body {
     font-family: 'Roboto', sans-serif;
     font-weight: 300;
     font-size: 1.4rem;
+    text-align: center;
     line-height: 1.5;
     color: ${colors.greyDark};
 
+    ${minMedia.sm`
+    font-size: 1.6rem;
+    `}
+  }
+
+  button {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    font-size: 1.4rem;
     ${minMedia.sm`
     font-size: 1.6rem;
     `}
@@ -48,7 +58,7 @@ body {
 
     ${minMedia.sm`
     font-size: 3.2rem;
-    font-wieght: 500;
+    font-weight: 500;
     `}
   }
 
@@ -62,7 +72,7 @@ body {
 
     ${minMedia.sm`
     font-size: 2.8rem;
-    font-wieght: 500;
+    font-weight: 500;
     `}
   }
 
@@ -82,8 +92,134 @@ body {
     text-decoration: none;
     color: black;
   }
- 
 
+  button:focus {
+    outline: 0;
+  }
+
+  .hp-carousel {
+    width: 100%;
+  }
+ 
+  .carousel {
+    width: 40rem;
+  }
+
+  ${maxMedia.sm`
+  .carousel {
+    width: 30rem;
+    margin: auto;
+  }
+  `}
+  
+  .carousel__wrap {
+    position: relative;
+    background-color: transparent;
+  }
+  
+  .carousel__viewport {
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  .carousel__viewport.is-draggable {
+    cursor: move;
+    cursor: grab;
+  }
+  
+  .carousel__viewport.is-dragging {
+    cursor: grabbing;
+  }
+  
+  .carousel__container {
+    display: flex;
+  }
+  
+  .carousel__item {
+    /*position: relative;  Only needed if the carousel option is set to { loop: true } */
+    flex: 0 0 100%; /* Slide width will be 80% */
+  
+  }
+
+  .hp-carousel__item {
+    position: relative; /*   Only needed if the carousel option is set to { loop: true } */
+    flex: 0 0 100%; /* Slide width will be 80% */
+  
+  }
+
+  .carousel__dots {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+  
+  .carousel__dot {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    cursor: pointer;
+    position: relative;
+    padding: 0;
+    width: 3rem;
+    height: 3rem;
+    margin-right: 0.75rem;
+    margin-left: 0.75rem;
+    border: 0;
+  }
+  
+  .carousel__dot:after {
+    background-color: ${colors.greyLight}; 
+    width: 100%;
+    height: 0.4rem;
+    content: "";
+  }
+  
+  .carousel__dot.is-selected:after {
+    background-color: ${colors.lighter};
+  }
+
+  .carousel__arrowBtn {
+    background-color: transparent;
+    position: absolute;
+    transform: translateY(-50%);
+    top: 50%;
+    width: 5rem;
+    height: 5rem;
+    padding: 0;
+    border: 0;
+    cursor: pointer;
+    fill: ${colors.lighter}; /* Enabled color */
+  }
+  
+  .carousel__arrowBtn:disabled {
+    fill: #e9e9e9; /* Disabled color */
+    opacity: 0.5;
+  }
+  
+  .carousel__arrowBtn--prev {
+    left: calc(7% - 2.5rem);
+  }
+  
+  .carousel__arrowBtn--next {
+    right: calc(7% - 2.5rem);
+  }
+  
+
+  ${maxMedia.sm`
+  .carousel__arrowBtn--prev {
+    left: calc(12% - 2.5rem);
+  }
+
+  .carousel__arrowBtn--next {
+    right: calc(12% - 2.5rem);
+  }
+  `}
+
+  .carousel__arrowBtn__svg {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
 
   @font-face {
     font-family: 'steelfishbold_italic';

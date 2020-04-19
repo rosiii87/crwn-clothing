@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import {
   clearItemFromWish,
   addWishItem,
-  removeItem
+  removeItem,
 } from '../../redux/wish/wish.actions';
 
 import { addItem } from '../../redux/cart/cart.actions';
@@ -13,34 +13,35 @@ import {
   WhishListItemContainer,
   ImageContainer,
   TextContainer,
-  QuantityContainer,
-  RemoveButtonContainer
+  // QuantityContainer,
+  RemoveButtonContainer,
+  AddToCart,
 } from './wish-item.styles';
 
 const WishItem = ({
   addItem,
   wishItem,
-  addWishItem,
+  // addWishItem,
   clearItem,
-  removeItem
+  // removeItem,
 }) => {
-  const { name, imageUrl, price, quantity } = wishItem;
+  const { name, imageUrl, price } = wishItem;
   return (
     <WhishListItemContainer>
       <ImageContainer>
         <img src={imageUrl} alt="item" />
       </ImageContainer>
       <TextContainer>{name}</TextContainer>
-      <QuantityContainer>
+      {/* <QuantityContainer>
         <div onClick={() => removeItem(wishItem)}>&#10094;</div>
         <span>{quantity}</span>
         <div onClick={() => addWishItem(wishItem)}>&#10095;</div>
-      </QuantityContainer>
-      <TextContainer>{price}</TextContainer>
+      </QuantityContainer> */}
+      <TextContainer>{price} Kč</TextContainer>
       {wishItem.stock > 0 ? (
-        <TextContainer onClick={() => addItem(wishItem)}>buy</TextContainer>
+        <AddToCart onClick={() => addItem(wishItem)}>DO KOŠÍKU</AddToCart>
       ) : (
-        <TextContainer>Sold Out</TextContainer>
+        <TextContainer>VYPRODÁNO</TextContainer>
       )}
 
       <RemoveButtonContainer onClick={() => clearItem(wishItem)}>
@@ -50,11 +51,11 @@ const WishItem = ({
   );
 };
 
-const mapDispatchToProps = dispatch => ({
-  clearItem: item => dispatch(clearItemFromWish(item)),
-  addWishItem: item => dispatch(addWishItem(item)),
-  removeItem: item => dispatch(removeItem(item)),
-  addItem: item => dispatch(addItem(item))
+const mapDispatchToProps = (dispatch) => ({
+  clearItem: (item) => dispatch(clearItemFromWish(item)),
+  addWishItem: (item) => dispatch(addWishItem(item)),
+  removeItem: (item) => dispatch(removeItem(item)),
+  addItem: (item) => dispatch(addItem(item)),
 });
 
 export default connect(null, mapDispatchToProps)(WishItem);

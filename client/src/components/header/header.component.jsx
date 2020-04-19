@@ -15,11 +15,12 @@ import {
   BrandName,
   WishMidContainer,
   StickFake,
+  SubMenuLink,
 } from './header.styles';
 
 import { WishContainer } from '../wish-icon/wish-icon.styles';
 
-const Header = () => {
+const Header = ({ currentUser }) => {
   return (
     <>
       <HeaderContainer>
@@ -44,7 +45,15 @@ const Header = () => {
           <StickCart />
         </SideMenuContainer>
       </HeaderContainer>
-      <ButtomLine />
+      <ButtomLine>
+        {!currentUser ? (
+          <SubMenuLink to="/signin">příhlásit</SubMenuLink>
+        ) : (
+          <SubMenuLink to={`/profil/${currentUser.displayName}`}>
+            {currentUser.displayName}
+          </SubMenuLink>
+        )}
+      </ButtomLine>
     </>
   );
 };

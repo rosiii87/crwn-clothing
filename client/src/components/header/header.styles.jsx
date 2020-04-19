@@ -53,8 +53,8 @@ export const SideMenuContainer = styled.div`
 `;
 
 export const WishMidContainer = styled(Link)`
-  width: 4.5rem;
-  height: 4.5rem;
+  width: 5rem;
+  height: 5rem;
   position: relative;
   display: flex;
   align-items: center;
@@ -103,9 +103,24 @@ export const OptionLink = styled(Link)`
 export const ButtomLine = styled.div`
   width: 100%;
   height: 2rem;
-  margin-bottom: 2rem;
-  background-color: ${colors.greyDark};
+  background-image: linear-gradient(
+    90deg,
+    ${colors.primary} 0%,
+    ${colors.almostBlack} 90%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   ${minMedia.sm`
 height: 3rem;
 `}
+`;
+
+export const SubMenuLink = styled(Link)`
+  color: #fff;
+
+  :hover {
+    color: ${colors.lighter};
+  }
 `;

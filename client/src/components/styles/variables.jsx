@@ -11,8 +11,10 @@ export const colors = {
   darker: '#484759',
   lighter: '#A6A5C1',
   greyDark: '#656565',
+  greyBetween: '#979797',
   greyLight: '#D9D9D9',
   almostBlack: '#111517',
+  middlepoint: '#4a4b5c',
 };
 
 export const breakpoints = {

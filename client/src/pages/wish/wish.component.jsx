@@ -3,14 +3,16 @@ import { connect } from 'react-redux';
 
 import { createStructuredSelector } from 'reselect';
 
-import { Helmet } from 'react-helmet';
+// import { Helmet } from 'react-helmet';
 
 import {
-  CheckoutPageContainer,
-  CheckoutHeaderContainer,
-  HeaderBlockContainer
-  // WarningContainer
-} from '../checkout/checkout.styles';
+  WishPageContainer,
+  WishItemsContainer,
+  WishWall,
+  WishImage,
+} from './wish.styles';
+
+import Carousel from '../../components/carousel/carousel.component';
 
 import WishItem from '../../components/wish-item/wish-item.component';
 
@@ -19,44 +21,26 @@ import { selectWishItems } from '../../redux/wish/wish.selectors';
 
 const WishList = ({ wishItems }) => {
   return (
-    <CheckoutPageContainer>
-      <Helmet>
-        <title>Whish-List</title>
-        <meta
-          name="description"
-          content="Přidejte si své zamilované produkty do košíku"
-        />
-      </Helmet>
-      <CheckoutHeaderContainer>
-        <HeaderBlockContainer>
-          <span>Product</span>
-        </HeaderBlockContainer>
-        <HeaderBlockContainer>
-          <span>Description</span>
-        </HeaderBlockContainer>
-        <HeaderBlockContainer>
-          <span>Quantity</span>
-        </HeaderBlockContainer>
-        <HeaderBlockContainer>
-          <span>Price</span>
-        </HeaderBlockContainer>
-        <HeaderBlockContainer>
-          <span>Add to cart</span>
-        </HeaderBlockContainer>
-        <HeaderBlockContainer>
-          <span>Remove</span>
-        </HeaderBlockContainer>
-      </CheckoutHeaderContainer>
-      {wishItems.map(wishItem => (
-        <WishItem key={wishItem.id} wishItem={wishItem} />
-      ))}
-    </CheckoutPageContainer>
+    <WishPageContainer>
+      <WishWall>
+        <Carousel>
+          {wishItems.map((wishItem) => (
+            <WishImage key={wishItem.id} src={wishItem.imageUrl} />
+          ))}
+        </Carousel>
+      </WishWall>
+      <WishItemsContainer>
+        {wishItems.map((wishItem) => (
+          <WishItem key={wishItem.id} wishItem={wishItem} />
+        ))}
+      </WishItemsContainer>
+    </WishPageContainer>
   );
 };
 
 const mapStateToProps = createStructuredSelector({
   //   user: selectCurrentUser,
-  wishItems: selectWishItems
+  wishItems: selectWishItems,
 });
 
 export default connect(mapStateToProps)(WishList);

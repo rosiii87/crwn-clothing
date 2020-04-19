@@ -9,11 +9,13 @@ export const CollectionItemContainer = styled.div`
   height: 33rem;
   align-items: center;
   position: relative;
-  padding: 2rem 1rem;
+  padding: 0 1rem;
+  color: transparent;
 
   &:hover {
     .image {
       opacity: 0.9;
+      box-shadow: 0 10px 10px rgb(0, 0, 0, 0.4);
     }
 
     button {
@@ -30,6 +32,8 @@ export const CollectionItemContainer = styled.div`
   &:hover {
     .image {
       opacity: unset;
+      box-shadow: 0 10px 10px rgb(0, 0, 0, 0.4);
+      
     }
 
     button {
@@ -43,10 +47,12 @@ export const AddWishButton = styled(CustomButton)`
   width: 80%;
   opacity: 0.9;
   position: absolute;
-  top: 0;
+  top: -1rem;
   display: none;
 
   ${maxMedia.sm`
+
+  max-height: 3.5rem;
     display: block;
     opacity: 0.9;
     min-width: unset;
@@ -57,10 +63,11 @@ export const AddButton = styled(CustomButton)`
   width: 80%;
   opacity: 0.9;
   position: absolute;
-  bottom: 0;
+  bottom: 1rem;
   display: none;
 
-  ${maxMedia.sm`
+  ${maxMedia.sm`  
+  max-height: 3.5rem;
   display: block;
   opacity: 0.9;
   min-width: unset;
@@ -78,6 +85,7 @@ export const BackgroundImage = styled.div`
   height: 100%;
   background-size: cover;
   background-position: center;
+  box-shadow: 0 10px 10px rgb(0, 0, 0, 0.2);
 
   background-image: ${({ imageUrl }) => `url(${imageUrl})`};
 `;

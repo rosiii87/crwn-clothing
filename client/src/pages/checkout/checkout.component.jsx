@@ -42,11 +42,10 @@ import {
 
 import {
   CheckoutPageContainer,
-  CheckoutHeaderContainer,
-  HeaderBlockContainer,
+  // CheckoutHeaderContainer,
   TotalContainer,
   InformativeText,
-  // WarningContainer
+  SemiTotalContainer,
 } from './checkout.styles';
 
 import { selectCurrentUser } from '../../redux/user/user.selectors';
@@ -183,27 +182,13 @@ const CheckoutPage = ({
           content="Košík - už jen pár kroků k dokončení vaší objednávky na CRWN clothing"
         />
       </Helmet>
-      <CheckoutHeaderContainer>
-        <HeaderBlockContainer>
-          <span>Product</span>
-        </HeaderBlockContainer>
-        <HeaderBlockContainer>
-          <span>Description</span>
-        </HeaderBlockContainer>
-        <HeaderBlockContainer>
-          <span>Quantity</span>
-        </HeaderBlockContainer>
-        <HeaderBlockContainer>
-          <span>Price</span>
-        </HeaderBlockContainer>
-        <HeaderBlockContainer>
-          <span>Remove</span>
-        </HeaderBlockContainer>
-      </CheckoutHeaderContainer>
+      {/* <CheckoutHeaderContainer></CheckoutHeaderContainer> */}
       {cartItems.map((cartItem) => (
         <CheckoutItem key={cartItem.id} cartItem={cartItem} />
       ))}
-      <TotalContainer>TOTAL: ${total}</TotalContainer>
+      <SemiTotalContainer>Zboží celkem: {total} Kč</SemiTotalContainer>
+      <SemiTotalContainer>Doprava: 90 Kč</SemiTotalContainer>
+      <TotalContainer>Celkem: {total + 90} Kč</TotalContainer>
 
       <SignUpContainer>
         <SignUpTitle>DOKONČIT OBJEDNÁVKU</SignUpTitle>
@@ -428,7 +413,7 @@ const CheckoutPage = ({
             <CustomButton>ZPRACOVÁVÁM...</CustomButton>
           ) : (
             <CustomButton type="submit">
-              ODESLAT OBJEDNÁVKU ZA {total} Kč
+              ODESLAT OBJEDNÁVKU ZA {total + 90} Kč
             </CustomButton>
           )}
           {thankYouPage ? <Redirect to="/thankyou" /> : null}

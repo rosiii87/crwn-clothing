@@ -1,27 +1,31 @@
 import styled from 'styled-components';
+import { maxMedia } from '../../components/styles/mixins';
+import { colors } from '../../components/styles/variables';
 
 export const CheckoutPageContainer = styled.div`
-  width: 55%;
-  min-height: 90vh;
+  max-width: 118rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 50px auto 0;
+  margin: 5rem auto 0;
 
   button {
     margin-left: auto;
     margin: 0 0 3.5rem 0;
   }
+
+  ${maxMedia.sm`
+  margin: 0 1rem;
+  `}
 `;
 
 export const CheckoutHeaderContainer = styled.div`
   width: 100%;
-  height: 40px;
   display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid darkgrey;
+  justify-content: center;
 `;
 
+// used in wish components
 export const HeaderBlockContainer = styled.div`
   text-transform: capitalize;
   width: 23%;
@@ -31,10 +35,30 @@ export const HeaderBlockContainer = styled.div`
   }
 `;
 
-export const TotalContainer = styled.div`
-  margin-top: 30px;
+export const SemiTotalContainer = styled.span`
   margin-left: auto;
-  font-size: 36px;
+  ${maxMedia.xs`
+  margin: auto;
+`};
+`;
+
+export const TotalContainer = styled.div`
+  margin-top: 2rem;
+  margin-left: auto;
+  font-size: 3.6rem;
+  color: ${colors.almostBlack};
+  ${maxMedia.xs`
+  font-size: 2.4rem;
+  margin: 2rem auto;
+  width: 100%;
+  padding 1rem 0;
+  color: white;
+  background-image: linear-gradient(
+    90deg,
+    ${colors.primary} 0%,
+    ${colors.almostBlack} 90%
+  );
+`};
 `;
 
 export const WarningContainer = styled.div`

@@ -72,7 +72,7 @@ const App = ({
   return (
     <div>
       <GlobalStyle />
-      <Header />
+      <Header currentUser={currentUser} />
       <Switch>
         <ErrorBoundary>
           <Suspense fallback={<Spinner />}>

@@ -6,10 +6,21 @@ import { selectCurrentUser } from '../../redux/user/user.selectors';
 
 import {
   SignUpContainer,
-  SignUpTitle
+  // SignUpTitle,
 } from '../../components/sign-up/sign-up.styles';
 
-import FormInput from '../../components/form-input/form-input.component';
+import {
+  FormTextFullLabel,
+  FormTextFullText,
+  FormTextFullInput,
+  FormMain,
+  FormRadioContainer,
+  FormCheckLabel,
+  FormCheckHalf,
+  FormCustomCheck,
+} from '../../components/newsletter/forms.styles';
+
+import CustomButton from '../../components/custom-button/custom-button.component';
 
 import { editUser } from '../../redux/user/user.actions';
 
@@ -19,11 +30,11 @@ const EditUser = ({ user, editUser }) => {
     email: user.email,
     city: user.city,
     street: user.street,
-    telephone: user.telephone
+    telephone: user.telephone,
   });
 
   // addInfo handlers
-  const handleInfoChange = event => {
+  const handleInfoChange = (event) => {
     event.preventDefault();
     const { name, value } = event.target;
 
@@ -31,11 +42,10 @@ const EditUser = ({ user, editUser }) => {
   };
 
   const [legalCheck, setLegalCheck] = useState({
-    news: user.news ? user.news : false
+    news: user.news ? user.news : false,
   });
 
-  const handleChecks = event => {
-    event.preventDefault();
+  const handleChecks = (event) => {
     const { name } = event.target;
     const value = event.target.checked;
 
@@ -50,79 +60,104 @@ const EditUser = ({ user, editUser }) => {
 
   const { city, street, telephone } = addRef.current;
   const { news } = checkRef.current;
-  const handleEdit = async event => {
+  const handleEdit = async (event) => {
     event.preventDefault();
     editUser({
       city: city ? city : '',
       street: street ? street : '',
       telephone: telephone ? telephone : '',
-      news
+      news,
     });
   };
   return (
     <>
       <SignUpContainer>
-        <SignUpTitle>Osobní údaje</SignUpTitle>
-        <form className="sign-up-form" onSubmit={handleEdit}>
-          <FormInput
-            type="text"
-            name="displayName"
-            value={user.displayName}
-            onChange={handleInfoChange}
-            label={user ? "Damn that's cool name" : 'Full Name'}
-            readonly
-          />
-          <FormInput
-            type="email"
-            name="email"
-            value={user.email}
-            onChange={handleInfoChange}
-            label="even better"
-            readonly
-          />
-          Kontaktní údaje:
-          <FormInput
-            type="city"
-            name="city"
-            onChange={handleInfoChange}
-            value={city}
-            label="Město"
-          />
-          <FormInput
-            type="street"
-            name="street"
-            onChange={handleInfoChange}
-            value={street}
-            label="Ulice a Č.P."
-          />
-          <FormInput
-            type="tel"
-            name="telephone"
-            onChange={handleInfoChange}
-            value={telephone}
-            label="Tel. číslo"
-          />
-          <FormInput
-            type="checkbox"
-            name="news"
-            value={news}
-            checked={news ? news : false}
-            onChange={handleChecks}
-            label="Odběr novinek"
-          />
-          <button type="submit">ULOŽIT ZMĚNY</button>
-        </form>
+        <FormMain className="sign-up-form" onSubmit={handleEdit}>
+          <FormTextFullLabel>
+            <FormTextFullInput
+              type="text"
+              name="displayName"
+              placeholder=" "
+              value={user.displayName}
+              onChange={handleInfoChange}
+              label={user ? 'Hustý jméno' : 'Jméno a příjmení'}
+            />
+            <FormTextFullText>Jméno a příjmení</FormTextFullText>
+          </FormTextFullLabel>
+          <FormTextFullLabel>
+            <FormTextFullInput
+              type="email"
+              name="email"
+              placeholder=" "
+              value={user.email}
+              onChange={handleInfoChange}
+              label="even better"
+              readonly
+            />
+            <FormTextFullText>Email</FormTextFullText>
+          </FormTextFullLabel>
+          <span>Kontaktní údaje:</span>
+          <br />
+          <FormTextFullLabel>
+            <FormTextFullInput
+              type="city"
+              name="city"
+              placeholder=" "
+              onChange={handleInfoChange}
+              value={city}
+              label="Město"
+            />
+            <FormTextFullText>Město</FormTextFullText>
+          </FormTextFullLabel>
+          <FormTextFullLabel>
+            <FormTextFullInput
+              type="street"
+              name="street"
+              placeholder=" "
+              onChange={handleInfoChange}
+              value={street}
+              label="Ulice a Č.P."
+            />
+            <FormTextFullText>Ulice a Č.P.</FormTextFullText>
+          </FormTextFullLabel>
+          <FormTextFullLabel>
+            <FormTextFullInput
+              type="tel"
+              name="telephone"
+              placeholder=" "
+              onChange={handleInfoChange}
+              value={telephone}
+              label="Tel. číslo"
+            />
+            <FormTextFullText>Tel. číslo</FormTextFullText>
+          </FormTextFullLabel>
+          <FormRadioContainer>
+            <FormCheckLabel style={{ width: '100%' }}>
+              <FormCheckHalf
+                type="checkbox"
+                name="news"
+                value={news}
+                checked={news ? news : false}
+                onChange={handleChecks}
+                label="Odběr novinek"
+              />{' '}
+              Odebírání novinek
+              <FormCustomCheck />
+            </FormCheckLabel>
+          </FormRadioContainer>
+          <CustomButton type="submit">ULOŽIT ZMĚNY</CustomButton>
+        </FormMain>
       </SignUpContainer>
     </>
   );
 };
 
 const mapStateToProps = createStructuredSelector({
-  user: selectCurrentUser
+  user: selectCurrentUser,
 });
 
-const mapDispatchToProps = dispatch => ({
-  editUser: additionalData => dispatch(editUser({ additionalData }))
+const mapDispatchToProps = (dispatch) => ({
+  editUser: (additionalData) => dispatch(editUser({ additionalData })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditUser);

@@ -56,6 +56,10 @@ export const FormRadioContainer = styled.div`
   display: flex;
   width: 100%;
   margin-bottom: 3rem;
+
+  ${maxMedia.sm`
+  flex-direction: column;
+  `}
 `;
 
 export const FormRadioLabel = styled.label`
@@ -70,6 +74,11 @@ export const FormRadioLabel = styled.label`
   border: 1px solid ${colors.greyLight};
   height: 100%;
   margin-right: 0.5rem;
+
+  ${maxMedia.sm`
+  width: unset;
+  margin-bottom: 1rem;
+  `}
 
   :hover {
     border: 1px solid ${colors.almostBlack};

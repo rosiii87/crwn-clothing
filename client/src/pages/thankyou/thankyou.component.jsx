@@ -1,12 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 import { createStructuredSelector } from 'reselect';
 import { firestore } from '../../firebase/firebase.utils';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 
 import Spinner from '../../components/spinner/spinner.component';
+
+import {
+  ThankYouContainer,
+  SummaryContainer,
+  ImagesContainer,
+  ProductContainer,
+  ImageItem,
+  TextItem,
+  BackLink,
+} from './thankyou.styles';
 
 function useOrderDetails(userId) {
   const [lastestOrderDetails, setLastestOrderDetails] = useState({
@@ -25,7 +34,7 @@ function useOrderDetails(userId) {
     cartItems: [],
     total: 0,
     message: '',
-    isLoading: true
+    isLoading: true,
   });
 
   useEffect(() => {
@@ -34,7 +43,7 @@ function useOrderDetails(userId) {
       .where('userId', '==', userId)
       .where('createdAt', '>', '946684800')
       .orderBy('createdAt', 'desc')
-      .onSnapshot(snapshot => {
+      .onSnapshot((snapshot) => {
         const newOrderDetails = snapshot.docs[0].data();
         setLastestOrderDetails(newOrderDetails);
       });
@@ -56,55 +65,98 @@ function ThankYouPage({ user }) {
       {!orderDetails.Status ? (
         <Spinner />
       ) : (
-        <div>
+        <ThankYouContainer>
           <h2>
             Vaše objednávka č.<strong>{orderDetails.orderId}</strong> byla
             úspěšně přijata!
           </h2>
-          <ul>
-            <li>
-              <span>Status: {orderDetails.Status}</span>
-            </li>
-            <li>
-              <span>Jméno: {orderDetails.Name}</span>
-            </li>
-            <li>
-              <span>Email: {orderDetails.Email}</span>
-            </li>
-            <li>
-              <span>Adressa:{orderDetails.City}</span>
-            </li>
-          </ul>
+          <span>
+            V případě jakýchkoliv požadavků nás prosím kontaktuje na
+            info@mywall.cz
+          </span>
+          <br />
+          <SummaryContainer>
+            <span>Stav:</span>
+            <span>{orderDetails.Status}</span>
+          </SummaryContainer>
+          <SummaryContainer>
+            <span>Jméno:</span>
+            <span>{orderDetails.Name}</span>
+          </SummaryContainer>
+          <SummaryContainer>
+            <span>Email:</span>
+            <span>{orderDetails.Email}</span>
+          </SummaryContainer>
+          <SummaryContainer>
+            <span>Adresa:</span>
+            <span>
+              {orderDetails.City}, {orderDetails.Street}
+            </span>
+          </SummaryContainer>
+          <SummaryContainer>
+            <span>Vytvořeno dne:</span>
+            <span>{orderDetails.createdAt.split('G')[0]}</span>
+          </SummaryContainer>
+          <br />
           <h3>Způsob platby a doručení:</h3>
-          <ul>
-            <li>
-              <span>Celkem: {orderDetails.total} Kč</span>
-            </li>
-            <li>
-              <span>Platba: {orderDetails.Payment}</span>
-            </li>
-            <li>
-              <span>Doprava: {orderDetails.Doprava}</span>
-            </li>
-            <li>
-              <span>Vaše zpráva: {orderDetails.message}</span>
-            </li>
-          </ul>
+          <br />
+          <SummaryContainer>
+            <span>Celkem:</span>
+            <span>{orderDetails.total} Kč</span>
+          </SummaryContainer>
+          <SummaryContainer>
+            <span>Platba:</span>
+            <span>{orderDetails.Payment}</span>
+          </SummaryContainer>
+          <SummaryContainer>
+            <span>Doprava:</span>
+            <span>{orderDetails.Doprava}</span>
+          </SummaryContainer>
+          <SummaryContainer>
+            <span>Vaše zpráva:</span>
+            <span>{orderDetails.message}</span>
+          </SummaryContainer>
+
+          {orderDetails.Payment === 'Bankovní převod' ? (
+            <>
+              <br />
+              <h3>Údaje pro převod:</h3>
+              <span>Objednávku odešleme ihned po obdržení Vaší platby</span>
+              <br />
+              <SummaryContainer>
+                <span>Číslo účtu: </span>
+                <span>1111111/1111</span>
+              </SummaryContainer>
+              <SummaryContainer>
+                <span>Částka: </span>
+                <span>{orderDetails.total} Kč</span>
+              </SummaryContainer>
+              <SummaryContainer>
+                <span>Variabilní symbol: </span>
+                <span>{orderDetails.orderId}</span>
+              </SummaryContainer>
+            </>
+          ) : null}
+
+          <br />
           <h3>Objednané položky:</h3>
-          {cartItems.map(cartItem => (
-            <ul key={cartItem.id}>
-              <li>{cartItem.name}</li>
-              <li>{cartItem.imageUrl}</li>
-              <li>{cartItem.price} Kč</li>
-              <li>{cartItem.quantity} ks</li>
-            </ul>
-          ))}
-          <Link to={`profil/${user.displayName}`}>
+          <br />
+          <ImagesContainer>
+            {cartItems.map((cartItem) => (
+              <ProductContainer key={cartItem.id}>
+                <ImageItem src={cartItem.imageUrl} alt={cartItem.name} />
+                <TextItem>{cartItem.name}</TextItem>
+                <TextItem>{cartItem.price} Kč</TextItem>
+                <TextItem>{cartItem.quantity} ks</TextItem>
+              </ProductContainer>
+            ))}
+          </ImagesContainer>
+          <BackLink to={`profil/${user.displayName}`}>
             Přehled objednávek v účtu
-          </Link>
-          <br></br>
-          <Link to="/">Zpět na E-shop</Link>
-        </div>
+          </BackLink>
+          <br />
+          <BackLink to="/">Zpět na E-shop</BackLink>
+        </ThankYouContainer>
       )}
     </div>
     // some container from styles
@@ -112,7 +164,7 @@ function ThankYouPage({ user }) {
 }
 
 const mapStateToProps = createStructuredSelector({
-  user: selectCurrentUser
+  user: selectCurrentUser,
 });
 
 export default connect(mapStateToProps, null)(ThankYouPage);
