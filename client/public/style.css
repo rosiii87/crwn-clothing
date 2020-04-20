@@ -85,3 +85,18 @@
 .copy > span:hover {
   color: #908fb2;
 }
+
+.submenu-link {
+  color: #ffffff;
+}
+
+.sub-menu > span:nth-last-child(-n + 2) > a {
+  color: #d9d9d9;
+}
+
+.sub-menu > span:nth-last-child(-n + 2) > a:hover {
+  color: #908fb2;
+}
+.submenu-link:hover {
+  color: #908fb2;
+}

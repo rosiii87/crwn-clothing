@@ -2,10 +2,13 @@ import styled from 'styled-components';
 import CustomButton from '../custom-button/custom-button.component';
 import { Link } from 'react-router-dom';
 import { maxMedia } from '../styles/mixins';
+import { colors } from '../styles/variables';
 
 export const CollectionItemContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: 23rem;
+  margin-bottom: 2rem;
   height: 33rem;
   align-items: center;
   position: relative;
@@ -86,6 +89,7 @@ export const BackgroundImage = styled.div`
   background-size: cover;
   background-position: center;
   box-shadow: 0 10px 10px rgb(0, 0, 0, 0.2);
+  border: 1px solid ${colors.almostBlack};
 
   background-image: ${({ imageUrl }) => `url(${imageUrl})`};
 `;

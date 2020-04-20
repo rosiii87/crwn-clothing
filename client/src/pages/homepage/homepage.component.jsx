@@ -11,7 +11,8 @@ import SearchBar from '../../components/search/search.component';
 import HpCategory from '../../components/hp-category/hp-category.component';
 import HpCategory2 from '../../components/hp-category/hp-category2.component';
 import HpSearch from '../../components/hp-search/hp-search.component';
-import LatestContainer from '../../components/latest/latest.component';
+import HpLatest from '../../components/productfeeds/latest.component';
+import HpBestSellers from '../../components/productfeeds/bestsellers.component';
 
 import HpCarousel from '../../components/carousel/hp-carousel.component';
 
@@ -49,10 +50,9 @@ const HomePage = ({ sections, history, match }) => (
       <HpCarousel>
         <WallpaperWall>
           <WallBannerContainer>
-            <WallTitle>Brouzdejte v kategoriích</WallTitle>
-            <WallSpan onClick={() => history.push(`/shop`)}>
-              Všechny kategorie zde
-            </WallSpan>
+            <WallTitle onClick={() => history.push(`/shop`)}>
+              Brouzdejte v kategoriích
+            </WallTitle>
             <ImagesContainer>
               {sections
                 .filter((section, idx) => idx < 5)
@@ -95,10 +95,12 @@ const HomePage = ({ sections, history, match }) => (
 
       <HpCategory2 />
       <MiddleContainer>
-        <LatestContainer />
+        <HpLatest />
       </MiddleContainer>
       <HpCategory />
-      <div style={{ height: '50rem' }}></div>
+      <MiddleContainer>
+        <HpBestSellers />
+      </MiddleContainer>
     </Profiler>
   </HomePageContainer>
 );

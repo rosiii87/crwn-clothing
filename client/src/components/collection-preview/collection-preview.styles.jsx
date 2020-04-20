@@ -1,18 +1,17 @@
 import styled from 'styled-components';
+import { minMedia } from '../styles/mixins';
 
 export const CollectionPreviewContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 30px;
-
-  @media screen and (max-width: 800px) {
-    align-items: center;
-  }
+  margin: 0 auto 3rem;
+  align-items: center;
+  max-width: 118rem;
+  width: 100%;
 `;
 
 export const TitleContainer = styled.h1`
-  font-size: 28px;
-  margin: 0 auto 25px;
+  margin: 3rem auto;
   cursor: pointer;
 
   &:hover {
@@ -21,20 +20,19 @@ export const TitleContainer = styled.h1`
 `;
 
 export const PreviewContainer = styled.div`
-  max-width: 60%;
-  margin: auto;
   display: flex;
-  justify-content: space-between;
-
-  @media screen and (max-width: 1400px) {
-    max-width: 75%;
+  max-width: 100%;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  & > div {
+    min-width: 16rem;
+    width: 17rem;
+    margin: 2rem 0rem;
   }
-
-  @media screen and (max-width: 800px) {
-    max-width: unset;
-    margin: unset;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 15px;
-  }
+  ${minMedia.sm`
+justify-content: start;
+& > div {
+  min-width: 23.6rem;
+}
+`}
 `;

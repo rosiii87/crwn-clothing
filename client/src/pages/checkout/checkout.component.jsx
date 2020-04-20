@@ -189,11 +189,11 @@ const CheckoutPage = ({
       <SemiTotalContainer>Zboží celkem: {total} Kč</SemiTotalContainer>
       <SemiTotalContainer>Doprava: 90 Kč</SemiTotalContainer>
       <TotalContainer>Celkem: {total + 90} Kč</TotalContainer>
-
       <SignUpContainer>
         <SignUpTitle>DOKONČIT OBJEDNÁVKU</SignUpTitle>
         <FormMain className="sign-up-form" onSubmit={handlePay}>
           <InformativeText>Kontaktní údaje</InformativeText>
+
           <FormTextFullLabel>
             <FormTextFullInput
               type="text"
@@ -205,6 +205,7 @@ const CheckoutPage = ({
             />
             <FormTextFullText>Jméno a příjmení *</FormTextFullText>
           </FormTextFullLabel>
+
           <FormTextFullLabel>
             <FormTextFullInput
               type="email"
@@ -217,6 +218,7 @@ const CheckoutPage = ({
             />
             <FormTextFullText>Email *</FormTextFullText>
           </FormTextFullLabel>
+
           {!user ? (
             <FormTextFullLabel>
               <FormTextFullInput
@@ -266,6 +268,7 @@ const CheckoutPage = ({
               REGISTROVAT
             </CustomButton>
           ) : null}
+
           <FormTextFullLabel>
             <FormTextFullInput
               type="city"
@@ -278,6 +281,7 @@ const CheckoutPage = ({
             />
             <FormTextFullText>Město *</FormTextFullText>
           </FormTextFullLabel>
+
           <FormTextFullLabel>
             <FormTextFullInput
               type="street"
@@ -290,6 +294,7 @@ const CheckoutPage = ({
             />
             <FormTextFullText>Ulice a Č.P. *</FormTextFullText>
           </FormTextFullLabel>
+
           <FormTextFullLabel>
             <FormTextFullInput
               type="tel"
@@ -302,7 +307,9 @@ const CheckoutPage = ({
             />
             <FormTextFullText>Tel. číslo *</FormTextFullText>
           </FormTextFullLabel>
+
           <InformativeText>Doprava *</InformativeText>
+
           <FormRadioContainer>
             <FormRadioLabel>
               <FormRadioHalf
@@ -316,6 +323,7 @@ const CheckoutPage = ({
               GLS
               <FormCustomRadio />
             </FormRadioLabel>
+
             <FormRadioLabel>
               <FormRadioHalf
                 type="radio"
@@ -328,7 +336,9 @@ const CheckoutPage = ({
               <FormCustomRadio />
             </FormRadioLabel>
           </FormRadioContainer>
+
           <InformativeText>Platba *</InformativeText>
+
           <FormRadioContainer>
             <FormRadioLabel>
               <FormRadioHalf
@@ -342,6 +352,7 @@ const CheckoutPage = ({
               Dobírka
               <FormCustomRadio />
             </FormRadioLabel>
+
             <FormRadioLabel>
               <FormRadioHalf
                 type="radio"
@@ -354,6 +365,7 @@ const CheckoutPage = ({
               <FormCustomRadio />
             </FormRadioLabel>
           </FormRadioContainer>
+
           <FormTextFullLabel>
             <FormTextFullInput
               style={{ height: '10rem' }}
@@ -366,7 +378,9 @@ const CheckoutPage = ({
             />
             <FormTextFullText>Přidat vzkaz k objednávce</FormTextFullText>
           </FormTextFullLabel>
+
           <InformativeText>Obchodní podmínky</InformativeText>
+
           <FormRadioContainer>
             <FormCheckLabel style={{ width: '100%' }}>
               <FormCheckHalf

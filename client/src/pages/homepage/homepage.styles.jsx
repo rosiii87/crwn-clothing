@@ -47,13 +47,15 @@ export const WallBannerContainer = styled.div`
 `;
 export const WallTitle = styled.h1`
   color: #fff;
+  cursor: pointer;
+  margin-bottom: 1rem;
 
   :hover {
     color: ${colors.primary};
   }
 
   ${maxMedia.sm`
-  margin-top: 2rem;
+  margin: 1.5rem 0;
   `}
 `;
 
@@ -78,8 +80,8 @@ export const ImagesContainer = styled.div`
 export const CategoryContainer = styled.div`
   display: flex;
   flex-direction: column;
-  max-width: 20rem;
-  width: 100%;
+  width: 20rem;
+  height: 28rem;
   cursor: pointer;
 
   > h4 {
@@ -108,7 +110,8 @@ export const CategoryContainer = styled.div`
 export const CategoryImage = styled.img`
   width: 100%;
   margin-bottom: 2rem;
-  height: 20rem;
+  height: 100%;
+  border: 1px solid ${colors.almostBlack};
 
   ${maxMedia.sm`
   display: none;

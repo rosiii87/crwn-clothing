@@ -54,6 +54,7 @@ export const WallItemContainer = styled.div`
 export const WallItem = styled.img`
   width: 100%;
   height: 25.2rem;
+  border: 1px solid ${colors.almostBlack};
 `;
 
 export const WallTitle = styled.h1`

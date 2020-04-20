@@ -106,7 +106,7 @@ exports.updateRealStock = functions.firestore
     const orderData = snapshot.data();
     if (orderData) {
       const { cartItems } = orderData;
-      cartItems.forEach(async cartItem => {
+      cartItems.forEach(async (cartItem) => {
         const postCollection = db.collection('stock');
         const postQuery = postCollection.where('id', '==', cartItem.id);
 
@@ -116,9 +116,9 @@ exports.updateRealStock = functions.firestore
           return null;
         } else {
           let batch = db.batch();
-          querySnapshot.forEach(doc => {
+          querySnapshot.forEach((doc) => {
             batch.update(doc.ref, {
-              stock: admin.firestore.FieldValue.increment(-quantity)
+              stock: admin.firestore.FieldValue.increment(-quantity),
             });
           });
           return batch.commit();
@@ -148,17 +148,38 @@ exports.updateCollectionFromStock = functions.firestore
         return null;
       } else {
         let batch = db.batch();
-        querySnapshot.forEach(doc => {
+        querySnapshot.forEach((doc) => {
           batch.update(doc.ref, {
-            items: admin.firestore.FieldValue.arrayRemove(prevValue)
+            items: admin.firestore.FieldValue.arrayRemove(prevValue),
           });
           batch.update(doc.ref, {
-            items: admin.firestore.FieldValue.arrayUnion(newValue)
+            items: admin.firestore.FieldValue.arrayUnion(newValue),
           });
         });
         return batch.commit();
       }
     } catch (error) {
       console.log(error);
+    }
+  });
+
+exports.addBestsellers = functions.firestore
+  .document('orders/{orderID}')
+  .onCreate((snapshot, context) => {
+    const orderData = snapshot.data();
+    if (orderData) {
+      const { cartItems } = orderData;
+      let batch = db.batch();
+      cartItems.forEach(
+        (cartItem) => {
+          const bestRef = db.collection('bestsellers').doc();
+          batch.set(bestRef, cartItem);
+          batch.update(bestRef, { createdAt: new Date().toString() });
+        },
+        { merge: true }
+      );
+      return batch.commit();
+    } else {
+      return null;
     }
   });

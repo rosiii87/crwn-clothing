@@ -54,6 +54,7 @@ export const ProductContainer = styled.div`
 export const ImageItem = styled.img`
   width: 20rem;
   margin-bottom: 1rem;
+  border: 1px solid ${colors.almostBlack};
   box-shadow: 0 10px 10px rgb(0, 0, 0, 0.2);
   ${maxMedia.sm`
   width: 28rem;

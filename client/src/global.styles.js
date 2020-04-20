@@ -42,7 +42,7 @@ body {
     font-weight: 700;
     letter-spacing: 2px;
     text-transform: uppercase;
-    line-height: 1.7;
+    line-height: 1.4;
 
     ${minMedia.sm`
     font-size: 4.8rem;
@@ -54,7 +54,7 @@ body {
     color: ${colors.almostBlack};
     font-size: 2rem;
     font-weight: 400;
-    line-height: 1.7;
+    line-height: 1.4;
 
     ${minMedia.sm`
     font-size: 3.2rem;
@@ -68,7 +68,7 @@ body {
     font-size: 1.8rem;
     font-weight: 400;
     font-style: bold;
-    line-height: 1.5;
+    line-height: 1.3;
 
     ${minMedia.sm`
     font-size: 2.8rem;
@@ -100,6 +100,21 @@ body {
   .hp-carousel {
     width: 100%;
   }
+
+  .product-detail-carousel {
+    width: 100%;
+  }
+
+  .product-carousel {
+    width: 100%;
+  }
+
+  ${maxMedia.sm`
+  .product-carousel {
+    width: 30rem;
+    margin: auto;
+  }
+  `}
  
   .carousel {
     width: 40rem;
@@ -133,6 +148,28 @@ body {
   
   .carousel__container {
     display: flex;
+  }
+
+  .product-carousel__container {
+    display: flex;
+    margin: 0rem 1rem 3rem 1rem;
+  }
+
+  .product-detail-carousel__container {
+    display: flex;
+  }
+  
+
+  .product-detail-carousel__item{
+    /*position: relative;  Only needed if the carousel option is set to { loop: true } */
+    flex: 0 0 100%; /* Slide width will be 80% */
+    padding: 0 2rem;
+  }
+  
+  .product-carousel__item {
+    /*position: relative;  Only needed if the carousel option is set to { loop: true } */
+    flex: 0 0 20%; /* Slide width will be 80% */
+    padding: 0 2rem;
   }
   
   .carousel__item {
